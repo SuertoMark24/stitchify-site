@@ -11,7 +11,8 @@ const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
   version: "3.1.0",
-  url: RELEASE_REPO + "/releases/download/v3.1.0/StitchifySetup-3.1.0.exe",
+  url: RELEASE_REPO + "/releases/download/v3.1.0/StitchifySetup-3.1.0.exe",       // full installer (Home)
+  updateUrl: RELEASE_REPO + "/releases/download/v3.1.0/StitchifyUpdate.zip",      // small patch (Patch page)
 };
 
 const RELEASES = [
@@ -42,6 +43,7 @@ const RELEASES = [
 
 /* ---- Wire up download buttons + version labels ---- */
 document.querySelectorAll("[data-download]").forEach((a) => { a.href = LATEST.url; });
+document.querySelectorAll("[data-patch]").forEach((a) => { a.href = LATEST.updateUrl; });
 document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = "v" + LATEST.version; });
 document.querySelectorAll("[data-contact]").forEach((a) => {
   a.href = "mailto:" + CONTACT_EMAIL + "?subject=Stitchify%20license";
@@ -58,10 +60,6 @@ if (relEl) {
       </div>
       <div class="rbody">
         <ul>${r.notes.map((n) => `<li>${n}</li>`).join("")}</ul>
-        <div class="rbtns">
-          ${r.url ? `<a class="btn btn-primary" href="${r.url}">⬇ Installer</a>` : ""}
-          ${r.updateUrl ? `<a class="btn btn-ghost" href="${r.updateUrl}" title="Already installed? Quit Stitchify, unzip, copy the files over your install folder (Replace), relaunch. Your license &amp; data stay.">⬇ Update .zip <small>(smaller)</small></a>` : ""}
-        </div>
       </div>
     </div>`).join("");
 }
