@@ -1,0 +1,144 @@
+/* Stitchify — sales & download site. Glassmorphism, matches the app (orange/teal, Fira). */
+:root {
+  --primary: #ff7a18;
+  --primary-2: #ff9a3c;
+  --secondary: #2dd4bf;
+  --bg: #14100c;
+  --bg-2: #0f0b07;
+  --card: rgba(30, 24, 19, 0.55);
+  --card-2: rgba(40, 32, 25, 0.6);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-hover: rgba(255, 122, 24, 0.55);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.60);
+  --faint: rgba(255, 255, 255, 0.40);
+  --radius: 16px;
+  --maxw: 1120px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: 'Fira Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 15% -10%, rgba(255, 122, 24, 0.16), transparent 55%),
+    radial-gradient(1000px 700px at 100% 0%, rgba(45, 212, 191, 0.12), transparent 50%),
+    var(--bg);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+.mono { font-family: 'Fira Code', monospace; }
+.accent { color: var(--primary-2); }
+
+/* ---- Nav ---- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  background: rgba(20, 16, 12, 0.6);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner { display: flex; align-items: center; gap: 20px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; }
+.brand img { width: 30px; height: 30px; }
+.brand span { font-family: 'Fira Code', monospace; color: var(--primary); }
+.nav-links { display: flex; gap: 22px; margin-left: auto; }
+.nav-links a { color: var(--muted); font-size: 0.95rem; transition: color .15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav .btn { margin-left: 8px; }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
+  cursor: pointer; border: 1px solid transparent; transition: transform .1s, box-shadow .15s, background .15s;
+}
+.btn-primary { color: #1a1005; background: linear-gradient(135deg, var(--primary-2), var(--primary)); box-shadow: 0 8px 24px rgba(255,122,24,.32); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,122,24,.45); }
+.btn-ghost { color: var(--text); background: rgba(255,255,255,.06); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--border-hover); }
+.btn-lg { padding: 15px 30px; font-size: 1.05rem; border-radius: 14px; }
+
+/* ---- Views ---- */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ---- Hero ---- */
+.hero { text-align: center; padding: 90px 0 70px; }
+.hero-logo { width: 84px; height: 84px; margin-bottom: 22px; filter: drop-shadow(0 10px 30px rgba(255,122,24,.4)); }
+.hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -1px; margin: 0 0 18px; }
+.hero h1 .grad { background: linear-gradient(120deg, var(--primary-2), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p.sub { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--muted); max-width: 720px; margin: 0 auto 34px; }
+.hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; align-items: center; }
+.hero-meta { margin-top: 16px; font-size: 0.85rem; color: var(--faint); }
+.hero-meta .mono { color: var(--secondary); }
+
+/* ---- Sections ---- */
+section { padding: 60px 0; }
+.section-head { text-align: center; max-width: 640px; margin: 0 auto 42px; }
+.section-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 700; letter-spacing: -0.5px; margin: 0 0 12px; }
+.section-head p { color: var(--muted); margin: 0; }
+
+/* ---- Glass card ---- */
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  padding: 26px; transition: transform .15s, border-color .15s, background .15s;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--border-hover); background: var(--card-2); }
+
+/* ---- Feature grid ---- */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feature .ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-size: 1.4rem;
+  background: linear-gradient(135deg, rgba(255,154,60,.22), rgba(45,212,191,.14)); margin-bottom: 14px; }
+.feature h3 { margin: 0 0 8px; font-size: 1.1rem; }
+.feature p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+
+/* ---- Steps ---- */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.step .num { font-family: 'Fira Code', monospace; font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+.step h3 { margin: 8px 0 6px; }
+.step p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+
+/* ---- Pricing ---- */
+.pricing { display: flex; justify-content: center; }
+.price-card { max-width: 420px; width: 100%; text-align: center; }
+.price-card .tier { color: var(--secondary); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; }
+.price-card .amount { font-size: 2.6rem; font-weight: 700; margin: 8px 0; }
+.price-card .amount small { font-size: 1rem; color: var(--muted); font-weight: 400; }
+.price-list { list-style: none; padding: 0; margin: 20px 0 24px; text-align: left; }
+.price-list li { padding: 8px 0; color: var(--muted); border-bottom: 1px solid var(--border); }
+.price-list li::before { content: "✓"; color: var(--secondary); font-weight: 700; margin-right: 10px; }
+.price-note { font-size: 0.8rem; color: var(--faint); margin-top: 14px; }
+
+/* ---- Patch ---- */
+.patch-head { padding: 70px 0 20px; text-align: center; }
+.releases { display: flex; flex-direction: column; gap: 18px; padding-bottom: 60px; }
+.release { display: flex; gap: 22px; align-items: flex-start; flex-wrap: wrap; }
+.release .rmeta { min-width: 140px; }
+.rbadge { display: inline-block; font-family: 'Fira Code', monospace; font-weight: 700; color: #1a1005;
+  background: linear-gradient(135deg, var(--primary-2), var(--primary)); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; }
+.rdate { display: block; color: var(--faint); font-size: 0.82rem; margin-top: 8px; }
+.release .rbody { flex: 1; min-width: 260px; }
+.release ul { margin: 0 0 16px; padding-left: 20px; color: var(--muted); }
+.release ul li { margin: 4px 0; }
+.rlatest { color: var(--secondary); font-size: 0.8rem; font-weight: 600; margin-left: 8px; }
+
+/* ---- Footer ---- */
+footer { border-top: 1px solid var(--border); padding: 40px 0; margin-top: 40px; color: var(--faint); font-size: 0.85rem; }
+footer .foot-top { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
+footer .disclaimer { max-width: 720px; line-height: 1.6; }
+footer a { color: var(--muted); }
+footer a:hover { color: var(--text); }
+.smartscreen { background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-top: 16px; color: var(--muted); font-size: 0.82rem; }
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+  .grid, .steps { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 0 50px; }
+}
