@@ -57,7 +57,6 @@ if (relEl) {
       </div>
       <div class="rbody">
         <ul>${r.notes.map((n) => `<li>${n}</li>`).join("")}</ul>
-        <a class="btn btn-primary" href="${r.url}">Download v${r.version}</a>
       </div>
     </div>`).join("");
 }
