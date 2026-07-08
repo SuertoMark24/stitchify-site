@@ -7,7 +7,7 @@
    https://github.com/<user>/<repo>/releases/download/vX.Y.Z/StitchifySetup-X.Y.Z.exe
    ============================================================================ */
 const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
-const CONTACT_EMAIL = "cb@2doit.nu";
+const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
   version: "3.1.0",
