@@ -35,7 +35,7 @@ const RELEASES = [
       "One-click installer (bundled runtime + FFmpeg + Chromium)",
       "Batch Stitch + customer-safe defaults",
     ],
-    url: RELEASE_REPO + "/releases/download/v3.0.0/StitchifySetup-3.0.0.exe",
+    // no url -> no download button (v3.0.0 has no published release). Add a url here if you publish one.
   },
 ];
 
