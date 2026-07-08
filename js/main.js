@@ -6,7 +6,7 @@
    Asset URL pattern:
    https://github.com/<user>/<repo>/releases/download/vX.Y.Z/StitchifySetup-X.Y.Z.exe
    ============================================================================ */
-const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-downloads";
+const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "cb@2doit.nu";
 
 const LATEST = {

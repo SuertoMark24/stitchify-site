@@ -18,10 +18,10 @@ netlify.toml      Static config + security headers
 4. (Optional) add a custom domain in Netlify.
 
 ## Where the installer is hosted (GitHub Releases)
-1. Create a **separate public repo** for binaries: `stitchify-downloads` (no source, just files).
+1. Create a **separate public repo** for binaries: `stitchify-site (releases hosted on this same repo)` (no source, just files).
 2. For each version, create a **Release** tagged `vX.Y.Z` and attach `StitchifySetup-X.Y.Z.exe`.
 3. The download URL is then:
-   `https://github.com/SuertoMark24/stitchify-downloads/releases/download/vX.Y.Z/StitchifySetup-X.Y.Z.exe`
+   `https://github.com/SuertoMark24/stitchify-site (releases hosted on this same repo)/releases/download/vX.Y.Z/StitchifySetup-X.Y.Z.exe`
 
 ## Ship a new version (edit ONE file: `js/main.js`)
 At the top of `js/main.js`:
