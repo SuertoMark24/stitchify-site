@@ -26,6 +26,7 @@ const RELEASES = [
       "Friendlier local address (stitchify.localhost)",
     ],
     url: RELEASE_REPO + "/releases/download/v3.1.0/StitchifySetup-3.1.0.exe",
+    updateUrl: RELEASE_REPO + "/releases/download/v3.1.0/StitchifyUpdate.zip",
   },
   {
     version: "3.0.0",
@@ -57,7 +58,10 @@ if (relEl) {
       </div>
       <div class="rbody">
         <ul>${r.notes.map((n) => `<li>${n}</li>`).join("")}</ul>
-        ${r.url ? `<a class="btn btn-primary" href="${r.url}">Download v${r.version}</a>` : ""}
+        <div class="rbtns">
+          ${r.url ? `<a class="btn btn-primary" href="${r.url}">⬇ Installer</a>` : ""}
+          ${r.updateUrl ? `<a class="btn btn-ghost" href="${r.updateUrl}" title="Already installed? Quit Stitchify, unzip, copy the files over your install folder (Replace), relaunch. Your license &amp; data stay.">⬇ Update .zip <small>(smaller)</small></a>` : ""}
+        </div>
       </div>
     </div>`).join("");
 }
