@@ -9,10 +9,13 @@
 const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
+// Buttons point at the GitHub "latest release" — whatever release you mark Latest auto-serves,
+// so you NEVER edit this file when you patch. Just publish a new release with these two assets
+// (StitchifySetup.exe + StitchifyUpdate.zip). Only bump `version` here to update the label text.
 const LATEST = {
   version: "3.1.0",
-  url: RELEASE_REPO + "/releases/download/v3.1.0/StitchifySetup-3.1.0.exe",       // full installer (Home)
-  updateUrl: RELEASE_REPO + "/releases/download/v3.1.0/StitchifyUpdate.zip",      // small patch (Patch page)
+  url: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",     // full installer (Home)
+  updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip", // small patch (Patch page)
 };
 
 const RELEASES = [
