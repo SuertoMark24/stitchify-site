@@ -13,16 +13,21 @@ const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 // so you NEVER edit this file when you patch. Just publish a new release with these two assets
 // (StitchifySetup.exe + StitchifyUpdate.zip). Only bump `version` here to update the label text.
 const LATEST = {
-  version: "3.1.0",
+  version: "3.1.2",
   url: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",     // full installer (Home)
   updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip", // small patch (Patch page)
 };
 
 const RELEASES = [
   {
-    version: "3.1.0",
+    version: "3.1.2",
     date: "Jul 8, 2026",
     latest: true,
+    notes: ['Rebranded to "Stitchify Pro"'],
+  },
+  {
+    version: "3.1.0",
+    date: "Jul 8, 2026",
     notes: [
       '"Hey Stitch" voice command — schedule a whole batch by voice',
       "MuAPI provider — 200+ AI video models (Kling, Veo, Sora, Wan, Seedance…)",
@@ -49,7 +54,7 @@ document.querySelectorAll("[data-download]").forEach((a) => { a.href = LATEST.ur
 document.querySelectorAll("[data-patch]").forEach((a) => { a.href = LATEST.updateUrl; });
 document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = "v" + LATEST.version; });
 document.querySelectorAll("[data-contact]").forEach((a) => {
-  a.href = "mailto:" + CONTACT_EMAIL + "?subject=Stitchify%20license";
+  a.href = "mailto:" + CONTACT_EMAIL + "?subject=Stitchify%20Pro%20license";
 });
 
 /* ---- Render the Patch list ---- */
