@@ -13,16 +13,26 @@ const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 // so you NEVER edit this file when you patch. Just publish a new release with these two assets
 // (StitchifySetup.exe + StitchifyUpdate.zip). Only bump `version` here to update the label text.
 const LATEST = {
-  version: "3.1.2",
+  version: "3.2.0",
   url: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",     // full installer (Home)
   updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip", // small patch (Patch page)
 };
 
 const RELEASES = [
   {
+    version: "3.2.0",
+    date: "Jul 9, 2026",
+    latest: true,
+    notes: [
+      "Editable prompts — edit any prompt or create your own",
+      "Per-account voiceover voice",
+      "Dynamic Product 360 image + video prompt",
+      "Version shown at the bottom of every page",
+    ],
+  },
+  {
     version: "3.1.2",
     date: "Jul 8, 2026",
-    latest: true,
     notes: ['Rebranded to "Stitchify Pro"'],
   },
   {
