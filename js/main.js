@@ -13,16 +13,25 @@ const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 // so you NEVER edit this file when you patch. Just publish a new release with these two assets
 // (StitchifySetup.exe + StitchifyUpdate.zip). Only bump `version` here to update the label text.
 const LATEST = {
-  version: "3.2.0",
-  url: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",     // full installer (Home)
-  updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip", // small patch (Patch page)
+  version: "3.3.0",
+  premiumUrl: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",        // Premium installer
+  starterUrl: RELEASE_REPO + "/releases/latest/download/StitchifyStarterSetup.exe", // Starter installer
+  updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip",        // shared patch (both editions)
 };
 
 const RELEASES = [
   {
-    version: "3.2.0",
+    version: "3.3.0",
     date: "Jul 9, 2026",
     latest: true,
+    notes: [
+      "Two editions — Starter and Premium",
+      "Dedicated Audio Generator page",
+    ],
+  },
+  {
+    version: "3.2.0",
+    date: "Jul 9, 2026",
     notes: [
       "Editable prompts — edit any prompt or create your own",
       "Per-account voiceover voice",
@@ -60,7 +69,10 @@ const RELEASES = [
 ];
 
 /* ---- Wire up download buttons + version labels ---- */
-document.querySelectorAll("[data-download]").forEach((a) => { a.href = LATEST.url; });
+document.querySelectorAll("[data-download]").forEach((a) => {
+  // data-download="starter" -> Starter installer; anything else -> Premium.
+  a.href = a.getAttribute("data-download") === "starter" ? LATEST.starterUrl : LATEST.premiumUrl;
+});
 document.querySelectorAll("[data-patch]").forEach((a) => { a.href = LATEST.updateUrl; });
 document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = "v" + LATEST.version; });
 document.querySelectorAll("[data-contact]").forEach((a) => {
