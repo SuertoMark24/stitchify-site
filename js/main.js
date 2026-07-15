@@ -13,7 +13,7 @@ const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 // so you NEVER edit this file when you patch. Just publish a new release with these two assets
 // (StitchifySetup.exe + StitchifyUpdate.zip). Only bump `version` here to update the label text.
 const LATEST = {
-  version: "3.3.0",
+  version: "3.3.1",
   premiumUrl: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",        // Premium installer
   starterUrl: RELEASE_REPO + "/releases/latest/download/StitchifyStarterSetup.exe", // Starter installer
   updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip",        // shared patch (both editions)
@@ -21,9 +21,17 @@ const LATEST = {
 
 const RELEASES = [
   {
+    version: "3.3.1",
+    date: "Jul 13, 2026",
+    latest: true,
+    notes: [
+      "UGC ad prompts — review montage, cover poster & Flow video from one photo",
+      "Dedicated Audio Generator page",
+    ],
+  },
+  {
     version: "3.3.0",
     date: "Jul 9, 2026",
-    latest: true,
     notes: [
       "Two editions — Starter and Premium",
       "Dedicated Audio Generator page",
