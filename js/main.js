@@ -126,3 +126,12 @@ showView();
 /* ---- Footer year ---- */
 const yr = document.getElementById("year");
 if (yr) yr.textContent = new Date().getFullYear();
+
+/* ---- Maximize a demo video to fullscreen ---- */
+function maximizeVideo(btn) {
+  const v = btn.parentElement.querySelector("video");
+  if (!v) return;
+  const req = v.requestFullscreen || v.webkitRequestFullscreen || v.webkitEnterFullscreen || v.msRequestFullscreen;
+  if (req) { try { req.call(v); } catch (e) { /* ignore */ } }
+  v.muted = false; // give sound when they choose to enlarge it
+}

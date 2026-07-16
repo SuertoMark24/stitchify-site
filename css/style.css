@@ -92,7 +92,17 @@ a { color: inherit; text-decoration: none; }
 .spotlight-copy { max-width: 720px; }
 .spotlight-copy .hero-cta { justify-content: center; }
 .spotlight-list { align-items: center; }
-.spotlight-video { width: 100%; }
+.spotlight-video { width: 100%; position: relative; }
+.vid-max {
+  position: absolute; bottom: 14px; right: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Fira Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+  color: #fff; background: rgba(20,16,12,.72); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.22); border-radius: 10px;
+  padding: 8px 13px; cursor: pointer; transition: background .15s, transform .12s;
+}
+.vid-max:hover { background: rgba(255,122,24,.9); transform: translateY(-1px); }
+.vid-max:focus-visible { outline: 3px solid var(--secondary); outline-offset: 2px; }
 .spotlight-copy .eyebrow {
   display: inline-block; font-family: 'Fira Code', monospace; font-size: 0.78rem;
   letter-spacing: 0.14em; text-transform: uppercase; color: var(--secondary);
