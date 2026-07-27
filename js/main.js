@@ -1,22 +1,14 @@
 /* ============================================================================
-   DOWNLOAD CONFIG — the only thing you edit when you ship a new version.
-   1. Create a Release in your public downloads repo, tagged vX.Y.Z, with the
-      StitchifySetup-X.Y.Z.exe attached.
-   2. Update LATEST below + add an entry to the top of RELEASES.
-   Asset URL pattern:
-   https://github.com/<user>/<repo>/releases/download/vX.Y.Z/StitchifySetup-X.Y.Z.exe
+   RELEASE CONFIG — the only thing you edit when you ship a new version.
+   Distribution is manual now (Discord community -> accept terms -> installer by
+   email), so there's no direct download button to wire up. Just bump `version`
+   below + add an entry to the top of RELEASES for the changelog / version label.
    ============================================================================ */
 const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
-// Buttons point at the GitHub "latest release" — whatever release you mark Latest auto-serves,
-// so you NEVER edit this file when you patch. Just publish a new release with these two assets
-// (StitchifySetup.exe + StitchifyUpdate.zip). Only bump `version` here to update the label text.
 const LATEST = {
   version: "3.3.3",
-  premiumUrl: RELEASE_REPO + "/releases/latest/download/StitchifySetup.exe",        // Premium installer
-  starterUrl: RELEASE_REPO + "/releases/latest/download/StitchifyStarterSetup.exe", // Starter installer
-  updateUrl: RELEASE_REPO + "/releases/latest/download/StitchifyUpdate.zip",        // shared patch (both editions)
 };
 
 const RELEASES = [
@@ -92,12 +84,7 @@ const RELEASES = [
   },
 ];
 
-/* ---- Wire up download buttons + version labels ---- */
-document.querySelectorAll("[data-download]").forEach((a) => {
-  // data-download="starter" -> Starter installer; anything else -> Premium.
-  a.href = a.getAttribute("data-download") === "starter" ? LATEST.starterUrl : LATEST.premiumUrl;
-});
-document.querySelectorAll("[data-patch]").forEach((a) => { a.href = LATEST.updateUrl; });
+/* ---- Wire up version labels ---- */
 document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = "v" + LATEST.version; });
 document.querySelectorAll("[data-contact]").forEach((a) => {
   a.href = "mailto:" + CONTACT_EMAIL + "?subject=Stitchify%20Pro%20license";
