@@ -8,14 +8,22 @@ const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
-  version: "3.3.3",
+  version: "3.3.4",
 };
 
 const RELEASES = [
   {
+    version: "3.3.4",
+    date: "Jul 28, 2026",
+    latest: true,
+    notes: [
+      "TikTok Shop CAPTCHA now shows a live countdown so you can solve it and the post continues automatically",
+      "Added a Proceed button to skip the wait once you've solved it yourself",
+    ],
+  },
+  {
     version: "3.3.3",
     date: "Jul 27, 2026",
-    latest: true,
     notes: [
       "TikTok account management (Add / Remove / Relogin) moved to a dedicated section in Settings",
       "Fixed product-linking sometimes failing to find your TikTok Shop products when posting",
