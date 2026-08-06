@@ -8,14 +8,23 @@ const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
-  version: "3.3.4",
+  version: "3.3.5",
 };
 
 const RELEASES = [
   {
+    version: "3.3.5",
+    date: "Aug 4, 2026",
+    latest: true,
+    notes: [
+      "New UGC prompt sets: Bubble Handheld (playful bubble-caption cover + hand-reveal video) and Cinemagraph Shop-the-Look",
+      "Fixed UGC review montage videos sometimes showing the reference storyboard grid itself instead of real footage",
+      "TikTok Shop CAPTCHA window now pops to the front automatically so it's always clear which browser window to solve it in",
+    ],
+  },
+  {
     version: "3.3.4",
     date: "Jul 28, 2026",
-    latest: true,
     notes: [
       "TikTok Shop CAPTCHA now shows a live countdown so you can solve it and the post continues automatically",
       "Added a Proceed button to skip the wait once you've solved it yourself",
