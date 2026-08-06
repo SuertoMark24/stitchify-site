@@ -184,6 +184,20 @@ section { padding: 60px 0; }
 .rbtns { display: flex; gap: 10px; flex-wrap: wrap; }
 .rbtns .btn small { opacity: 0.75; font-weight: 400; margin-left: 2px; }
 
+/* ---- Docs ---- */
+.docs-steps { display: flex; flex-direction: column; gap: 16px; padding-bottom: 32px; }
+.docs-step { display: flex; gap: 20px; align-items: flex-start; }
+.docs-num {
+  flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  font-family: 'Fira Code', monospace; font-weight: 700; color: #1a1005;
+  background: linear-gradient(135deg, var(--primary-2), var(--primary));
+}
+.docs-step h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.docs-step p { margin: 0; color: var(--muted); }
+.docs-help { text-align: center; margin-bottom: 60px; }
+.docs-help h3 { margin: 0 0 10px; }
+.docs-help p { color: var(--muted); max-width: 560px; margin: 0 auto 20px; }
+
 /* ---- Footer ---- */
 footer { border-top: 1px solid var(--border); padding: 40px 0; margin-top: 40px; color: var(--faint); font-size: 0.85rem; }
 footer .foot-top { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }

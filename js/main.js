@@ -122,13 +122,14 @@ if (relEl) {
     </div>`).join("");
 }
 
-/* ---- Tab switching (Home / Patch) via hash ---- */
+/* ---- Tab switching (Home / Docs / Patch) via hash ---- */
+const VIEW_IDS = ["home", "docs", "patch"];
 function showView() {
-  const isPatch = location.hash === "#patch";
-  document.getElementById("home").classList.toggle("active", !isPatch);
-  document.getElementById("patch").classList.toggle("active", isPatch);
+  const hash = location.hash.slice(1);
+  const activeId = VIEW_IDS.includes(hash) ? hash : "home";
+  VIEW_IDS.forEach((id) => document.getElementById(id)?.classList.toggle("active", id === activeId));
   document.querySelectorAll(".nav-links a[data-tab]").forEach((a) => {
-    a.classList.toggle("active", (a.getAttribute("href") === "#patch") === isPatch);
+    a.classList.toggle("active", a.getAttribute("href") === "#" + activeId);
   });
   window.scrollTo(0, 0);
 }
