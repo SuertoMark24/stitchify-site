@@ -169,6 +169,20 @@ section { padding: 60px 0; }
 .price-list li::before { content: "✓"; color: var(--secondary); font-weight: 700; margin-right: 10px; }
 .price-note { font-size: 0.8rem; color: var(--faint); margin-top: 14px; }
 
+.compare-wrap {
+  margin-top: 48px; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--card);
+}
+.compare-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.compare-table th, .compare-table td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--border); }
+.compare-table thead th { color: var(--secondary); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-size: 0.8rem; }
+.compare-table .compare-feature { text-align: left; color: var(--muted); font-size: 0.92rem; }
+.compare-table thead th.compare-feature { color: transparent; }
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:hover td { background: var(--card-2); }
+.compare-table .yes { color: var(--secondary); font-weight: 700; }
+.compare-table .no { color: var(--faint); }
+
 /* ---- Patch ---- */
 .patch-head { padding: 70px 0 20px; text-align: center; }
 .releases { display: flex; flex-direction: column; gap: 18px; padding-bottom: 60px; }
