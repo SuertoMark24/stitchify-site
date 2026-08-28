@@ -123,7 +123,7 @@ if (relEl) {
 }
 
 /* ---- Tab switching (Home / Docs / Patch) via hash ---- */
-const VIEW_IDS = ["home", "docs", "patch"];
+const VIEW_IDS = ["home", "docs", "patch", "about"];
 function showView() {
   const hash = location.hash.slice(1);
   const activeId = VIEW_IDS.includes(hash) ? hash : "home";
