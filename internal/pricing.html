@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Private pricing page. Dark-only by design, like the public site. The pricing itself is
-       AES-GCM encrypted below and only exists in readable form after the passphrase is entered.
-       Layout: lock card centred -> after unlock, one column: plans row, add-ons table, bundle,
-       good to know. */
+    /* Private pricing page with a quote builder. Dark-only by design, like the public site. The
+       prices are AES-GCM encrypted below and only exist in readable form after the passphrase.
+       Layout: lock card centred -> after unlock: plan cards row, then a two-column quote builder
+       (add-on checklist left, sticky summary + send form right), then bundle and notes. */
     :root {
       color-scheme: dark;
       --primary: #ff7a18;
@@ -35,23 +35,24 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; }
     body {
-      font-family: var(--body);
-      color: var(--text);
-      line-height: 1.5;
+      font-family: var(--body); color: var(--text); line-height: 1.5; min-height: 100vh;
       background:
         radial-gradient(1100px 700px at 10% -10%, rgba(255, 122, 24, 0.14), transparent 55%),
         radial-gradient(900px 600px at 100% 0%, rgba(45, 212, 191, 0.10), transparent 50%),
         var(--bg);
-      min-height: 100vh;
     }
     .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; }
     h1, h2, h3 { text-wrap: balance; margin: 0; }
-    .mono { font-family: var(--display); }
     .muted { color: var(--muted); }
     .eyebrow { font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
     .glass { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
     button { font: inherit; cursor: pointer; }
-    button:focus-visible, input:focus-visible { outline: 2px solid var(--primary-2); outline-offset: 2px; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, label.addon:focus-within { outline: 2px solid var(--primary-2); outline-offset: 2px; }
+    input, textarea { font: inherit; }
+
+    .btn { padding: 12px 18px; border-radius: 12px; border: 0; font-weight: 600; color: #1a1005; background: linear-gradient(135deg, var(--primary-2), var(--primary)); }
+    .btn[disabled] { opacity: 0.6; cursor: wait; }
+    .err { color: var(--bad); font-size: 0.9rem; min-height: 1.3em; }
 
     /* ---- Lock ---- */
     .lock { min-height: 70vh; display: grid; place-items: center; }
@@ -59,39 +60,31 @@
     .lock-card img { width: 40px; height: 40px; }
     .lock-card h1 { font-family: var(--display); font-size: 1.35rem; color: var(--primary); }
     .lock-card form { display: grid; gap: 10px; }
-    .lock-card input {
-      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.35); color: var(--text); font-family: var(--display); font-size: 1rem;
-    }
-    .btn {
-      padding: 12px 18px; border-radius: 12px; border: 0; font-weight: 600;
-      color: #1a1005; background: linear-gradient(135deg, var(--primary-2), var(--primary));
-    }
-    .btn[disabled] { opacity: 0.6; cursor: wait; }
-    .err { color: var(--bad); font-size: 0.9rem; min-height: 1.3em; }
+    .text-in { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0, 0, 0, 0.35); color: var(--text); }
+    .lock-card .text-in { font-family: var(--display); font-size: 1rem; }
 
-    /* ---- Desk ---- */
+    /* ---- Page ---- */
     .desk { display: grid; gap: 28px; }
     .head { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; justify-content: space-between; }
     .head h1 { font-family: var(--display); font-size: clamp(1.5rem, 3vw, 2rem); }
     .head h1 span { color: var(--primary); }
-    .head .lockbtn { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; }
-    .note { padding: 14px 16px; color: var(--muted); max-width: 72ch; }
+    .lockbtn { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; }
+    .note { padding: 14px 16px; color: var(--muted); max-width: 72ch; margin: 0; }
+    section { display: grid; gap: 14px; }
+    section > h2, .head h2 { font-size: 1.15rem; }
+    .step { font-family: var(--display); color: var(--primary-2); margin-right: 6px; }
 
     .seg { display: inline-flex; padding: 4px; gap: 4px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,.25); }
     .seg button { border: 0; background: transparent; color: var(--muted); padding: 8px 14px; border-radius: 9px; font-weight: 500; }
     .seg button[aria-pressed="true"] { background: var(--card-2); color: var(--text); box-shadow: inset 0 0 0 1px rgba(255,154,60,.45); }
 
-    section { display: grid; gap: 14px; }
-    section > h2 { font-size: 1.15rem; }
-
     .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-    .plan { padding: 20px; display: grid; gap: 12px; align-content: start; }
-    .plan.feature { border-color: rgba(255, 154, 60, 0.55); }
+    .plan { padding: 20px; display: grid; gap: 12px; align-content: start; transition: border-color .15s, box-shadow .15s; }
+    .plan.selected { border-color: rgba(255, 154, 60, 0.75); box-shadow: 0 0 0 1px rgba(255, 154, 60, 0.45), 0 12px 32px rgba(255, 122, 24, 0.14); }
     .plan h3 { font-family: var(--display); font-size: 1.05rem; color: var(--primary-2); }
     .price { font-family: var(--display); font-size: 1.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
     .price small { font-size: 0.85rem; font-weight: 500; color: var(--muted); }
-    .plan .who { color: var(--muted); font-size: 0.92rem; }
+    .plan .who { color: var(--muted); font-size: 0.92rem; margin: 0; }
     .chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .chip { font-size: 0.78rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
     .plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.9rem; }
@@ -99,25 +92,46 @@
     .plan li.no { color: var(--faint); }
     .plan li::before { content: "✓"; color: var(--ok); font-weight: 700; }
     .plan li.no::before { content: "–"; color: var(--faint); }
+    .choose { margin-top: 4px; padding: 10px 14px; border-radius: 11px; font-weight: 600; border: 1px solid var(--border); background: rgba(0,0,0,.25); color: var(--text); }
+    .plan.selected .choose { border-color: transparent; color: #1a1005; background: linear-gradient(135deg, var(--primary-2), var(--primary)); }
 
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; min-width: 680px; }
-    th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
-    th { font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
-    td.num { font-family: var(--display); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--primary-2); }
-    td .sub { display: block; color: var(--muted); font-size: 0.82rem; }
-    tr:last-child td { border-bottom: 0; }
+    .builder { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .addons { padding: 6px; display: grid; }
+    label.addon { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; padding: 12px; border-radius: 12px; cursor: pointer; }
+    label.addon + label.addon { border-top: 1px solid var(--border); border-top-left-radius: 0; border-top-right-radius: 0; }
+    label.addon:hover { background: rgba(255,255,255,.03); }
+    label.addon.off { cursor: not-allowed; opacity: .55; }
+    label.addon input[type="checkbox"] { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--primary); }
+    .addon b { font-weight: 600; }
+    .addon .sub { display: block; color: var(--muted); font-size: 0.84rem; }
+    .addon .why { display: block; color: var(--teal); font-size: 0.78rem; margin-top: 2px; }
+    .addon .amt { font-family: var(--display); color: var(--primary-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+    .qty { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; }
+    .qty button { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,.3); color: var(--text); font-weight: 700; }
+    .qty output { min-width: 2ch; text-align: center; font-family: var(--display); font-variant-numeric: tabular-nums; }
 
-    .bundle { padding: 20px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; border-color: rgba(45, 212, 191, 0.45); }
+    .summary { padding: 18px; display: grid; gap: 12px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+    .lines { display: grid; gap: 6px; font-size: 0.9rem; }
+    .line { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); }
+    .line b { color: var(--text); font-family: var(--display); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .line.save b { color: var(--ok); }
+    .total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .total .big { font-family: var(--display); font-size: 1.9rem; font-weight: 700; color: var(--primary-2); font-variant-numeric: tabular-nums; }
+    .summary form { display: grid; gap: 8px; }
+    .summary label { font-size: 0.82rem; color: var(--muted); display: grid; gap: 4px; }
+    .summary textarea { min-height: 70px; resize: vertical; }
+    .sent { padding: 12px 14px; border-radius: 12px; background: rgba(52, 211, 153, .12); border: 1px solid rgba(52, 211, 153, .4); color: var(--text); }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+    .bundle { padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; border-color: rgba(45, 212, 191, 0.45); }
     .bundle h3 { font-family: var(--display); color: var(--teal); }
     .bundle .price s { color: var(--faint); font-size: 1rem; font-weight: 500; margin-left: 8px; }
-
-
-    ul.todo { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; max-width: 80ch; color: var(--muted); }
+    ul.notes { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; max-width: 80ch; color: var(--muted); }
     .foot { color: var(--faint); font-size: 0.8rem; }
 
     @media (max-width: 860px) {
-      .plans { grid-template-columns: minmax(0, 1fr); }
+      .plans, .builder { grid-template-columns: minmax(0, 1fr); }
+      .summary { position: static; }
     }
     @media (prefers-reduced-motion: no-preference) {
       .desk { animation: rise .35s ease-out both; }
@@ -126,6 +140,14 @@
   </style>
 </head>
 <body>
+  <!-- Static copy of the quote form so Netlify Forms detects it at deploy time. The visible form is
+       rendered after unlocking and submits these same field names. -->
+  <form name="quote" netlify netlify-honeypot="bot-field" hidden>
+    <input name="name" /><input name="contact" /><textarea name="message"></textarea>
+    <input name="plan" /><input name="billing" /><input name="addons" /><input name="total" />
+    <textarea name="summary"></textarea><input name="bot-field" />
+  </form>
+
   <main class="wrap">
     <div class="lock" id="lock">
       <div class="lock-card glass">
@@ -136,7 +158,7 @@
           <p class="muted" style="margin:6px 0 0">Enter the passphrase you were given to view the plans.</p>
         </div>
         <form id="unlock-form" autocomplete="off">
-          <input id="pass" type="password" placeholder="Passphrase" aria-label="Passphrase" autocomplete="current-password" required />
+          <input class="text-in" id="pass" type="password" placeholder="Passphrase" aria-label="Passphrase" autocomplete="current-password" required />
           <button class="btn" id="unlock-btn" type="submit">Unlock</button>
           <div class="err" id="err" role="alert"></div>
         </form>
@@ -149,7 +171,7 @@
   <script>
     // Encrypted with AES-256-GCM, key derived from the passphrase via PBKDF2-SHA256.
     // Regenerate with the owner's local encrypt script — never paste readable prices here.
-    const PAYLOAD = /*PAYLOAD*/{"v":1,"iter":310000,"salt":"eQEpLZiybV03/A+4kZGsqA==","iv":"o1gVzimoTNWthci3","ct":"p+Tx619TRs4ue93SzvKvo+V/bh6nW2sDQfReRRyXmQ0ZY/Vkdd9+IgfMJOmGXRvSqKENmzEi4xo8K+ArhQq3m48/q5hnLYFqrUM8ptmWtI9zVI4Z1utMH53BltnH9ZarCD5Hld9kC1I8uXD5tgMjZabBiIYMd+3p3W5/zweecWFVdsaCxsLgPS7Oa9i+HtvStoMCnvCa3ZQ/q5JD6k+IcxNuaDMtuvc3tvVaEtAB3LgJWckZAp9SBzehO2SmX59++I9o4ub/HzQ9GcHxSTKqN5KcPWiSbKEaPs4BVqRGErcBUYKE57e3EBM9v3bDK07juZ/8Qob7Ln+Ya852LgTXkmS94PrKGGQa6pcPNYKcKTsHG1VS9uH46t3M/tp4e16b7amcuYor746vdUNbzeHkS+4dsyjwVuIFK/y0CsqD9z6QavcivSk5iCtlQb6Qd0ZXpo2m4TdNyF/GbhLTkFT6e1LxKKLaWgXxoEX+tIiO1YrRdU0FLFJfomWIu7fbUevO71RGp2dNBcXEgQWG4LVbmvaZecqJx2yDO1BnLNJ6OW5bzEIYegSQf8pxT9lE9B49VM6Q/3kcVbbiehYCzA5p1g5pwhpDhsxOltRyKXqJR5GnMmM+uyHMe/K+nVAy3OEVfWEyV4FFaz5WP7OUktsxalEVAijdU4gZYwpAXrKDvnQLZJwa2zzfKilOOb8kzamz3vl2/tbwzeEoiMh1zmhlCFw4aR8Ry/RdD8E7I4t5si6SDngcUS/1zrtHcodB9d6be5fjyG+TJSEO8SCC0NIaRb40oh/JsGS9q7kFJHLMRN9hKpsGNiMhwXKZs9wfGEojkD8lFzzxaniJHdSDlpLC/IaTDsGOFiOf54r5ERVbeLMXDdTwYofYnb166lsSlAOrZqH6eQ7A/0N4Ga2oxHkof7D3JrZW4LbBtGgoeP8nc8lfUQ8Z1RKSloZ9jxtBfXX1Yuh3paDkU9+Zo7iYIS2y0eB1watXsJmtszhP6oxA8XrxmXwsiW50zIYPVHZ4Di1rSAPsmzV0/MFGxdYVV2RyTbwijv/zjPWTB/iQkBgLeaKeeIJYvpsYjmiO+VAyv9llqZQ6146UwOsGfM4aXH+zmXyWv1XMKKLy+gbw/j6j61mSM3SRmBlU+Iexg02Se7ht15B1iD6w4zBCRiwyiKYYxr2v9EzcgyO9+ea6ucoIEx98DR8yiY4MAmpxrcBKhISqY7yEGZPbnY3x7zpNU/DpEsMKZP3Z3/gj8LCij1aMpwPFXcnQpz+GKd9xvhcHUsrGc6hdakf5zwYyfEsODlAj0ry6owDVMj9Y9WzzqSrltyEKepTysmBdrgRwqWMbHFkREX64OrtdhyEMmet1whdxgyd4cC3PllWUmtQSL79ZtLoSAsQ3nwFLpZndrwv/lKX1CeCVRssoIuoYuIwke9i37F+cp1SyZjFPfXmSbsEjOYVanF+ReIzPS/iC4HQ3tIb22z1f3C7PHS80cF13hxrtSQZwthfpaUuB952qx0n9XBwTHegqphqSIo9hBwX0RWyOaJDXWs65x1lUQZ88SwGUF70WtG77EOClP5cxxHDAfz65M5xuPYVWpcqUDVAZL84AejUu1+TADUv0MGEQYtR6kOJATjE2eSf6qHNe8X02oOUr/+ork20RkO0dOh85uVbT7T0jUtvoQlaTJfy0V0rD2MN3A900X81rsIczydxLrHa3hXK4p7LBohf/ht4ol3R1z4Q+zeU6WHjhVCFNEaSEMcPeLQHq0T6fuMNgRyUZHyL8Zh5mPk1C77yudlJAPtt3qADXktpL5VlgiPEkT2VLd6kV5u03bOAxUp1u3EXQ4Gi0Av1bq6WnVMffFX0yoyKD9CqHCbRW6kXwzXoELgH5Ha2H9LFYKrxMHmMCVzBOKUmjl4O5/cqQjQ+9xbgRDw6WtY/OgMxdO+B7l4i9mHnD3Z1X7HpAv22rLvSwiucMEWESI+hG02PbwI0SkZCDuZ7VxoRtK48l0WxmJ4ht6JyGBZJUAAFvMmG/hWuj/DJeV4jRDV8KDPIPb4h9Cp8Y14wFBNB/RbflZH/Evp2Pf62N8FrddmUyvpWva7c1u7odytUJSGyFEGnp0hMMPGaqLVx2obtmS63JSgy8ioS1g3+Z1aJVDM3obmFDjQyPWSQBIVUo5kxMvabhMKTeU1g/KCCDpfscsdwfao8qGEgWFbi1TxR8KZ8hgULjXXuPvyXSP8TcAG1cL9G9Vdpc3VUcaW9sq9Oii13lLQh9sCpJv7xdg82JWySnYKwfGGhFhlB4v27yRqo3nFz4DtSTv/YoTKUiXQOs945o65P5+7ksbNl8qeXbFxVpuopW6yVADSxrz2BVqdxZk9Zn9QPlrd/hVtbdDXilg8PKkkkei1dqVOVVQNcOct23ihR0CjqfSv0MaKXuEaZATHE8WuKqnfzEk+dnI8H7gkOlnYHoLKLgJE6qjZ/hmbJvzKfazCWH1+DuBrrQg3ej18n2EDaoDznSirA3twfVw7JBhzwhVMQ0jgaWF/R55z0IKo1e4u8iT8daBB2JNav03SjENoQTsfWxGI6VT5z5HS0vhOqEluONPU1+zkdaG6Vc2+5dAZK1RHY1TesuyJJ+VJRjrGdR0ajHL4eg8QgkXl8IQJeKr0QVYlSpStPBOOFvhl1ACk5BLo64UBpSk71D6b7dVg0jsIj/GXMKLrZQ/ioOWZMIr7QzwzbJhm4+5XWJ0ZXkxRBTMOjmI4UC1xpz6MS53JJkDh+rS5M05n8fS1DLXLOI5yoRtO9zZ6Y3VIMYJ8997/lbmcrigrLCiun025dQSZFPfQx9DxO8ucg9MGrnIeNv+H+p3AfKLkjqDHCa8WTi3smfILGUVTRrq5trBNLOTQcihSMBGdkSq6nqx6PJ+vrtC5E/qBv/363ZsiJ+WfHuV4pnoHXfJcCu5fgFw/1fjzZgBB6BXEG2bpWkAVezSF/2SVUf2Edm0wsTP1InGnVr0C+RkMVZfL4y+AL/13woTPx0uYnQRwmBmbQzu3u+m2aSf7IVuFMlEckfebeutgjKlaQ8EGc2pORTRAiwyKoAEYFBgMUrHxG36cKdnfmyPFVMfqQ+5z+uDK/hed6J50Na/9p05nWcyZhGl/woXp+skYK4+BQhpYUyT9TeacfGrPVuiPXuqgTt11j8YPxVOWX7DoN+JMvhOYlH0Ju1jE/41W3egaI71NZqw7MdoUVharrCSrruxD7Bs8sPE8akVJzRgU0neUp1oheYlJfHzgJgeZ9WFZJNOeJDzTxHoFh7cyHOaf+Xq3nDl9i79rkcaTXSRGbAmWAK5ImIOLgZVcCpxZjW3liIX5v55XINYL0NLlBobpEVD0hoPKw0gMKYU5zv7J8/EAEz9uj/Oc0nBILgTufaKSuKvvBAfi/gUlDfuuRG6+T1aHTTkkdj1IMr45Fc83FyZJ3j1euaSGyrXT3XqR/cRz9haSHv9g/sXIp+r7ercnHTBCQS9ylnupJzV0m277LXIpXlSmWmb19tLDMOKQF1SxP+s3x5qE3D0BCxKbdTF9Yy4+FAxehQ9PyyIoWH6y+Qf0/Af5KKEMwLYgRZiREdbQAJkjMScLO5WYrlPHBwz7BzvUydwUg6Sco9EWYnitrQ6Inq/2MRq5k9aHa7+hmLY+Z6WCWZjQj3N+xMMsNzMacb/tkSHCLK52lSCh0Ah9JLOLjZpY5DGMgHmsibSSS0isM6jFpskacb0UdVRiQdi1Sui3m9qZMsUyigK4ffLtxcHHYSDU6If+D5ytvr6PsuRbiQH5gEQOc/5rAQYcYaxWMaVoc68ApLJmBr8uP4TKBGldGz2OK0vkt7OXfOphxK/x0+YDYu/hdHhTyFQzmpRTEQIV3HOuB5N1fZo6uZHZ8w0P0Jpfoc"}/*END*/;
+    const PAYLOAD = /*PAYLOAD*/{"v":1,"iter":310000,"salt":"TCQINP/Z+1srVzEnSfwRgA==","iv":"XC4xqAfRk8Jq6Xef","ct":"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"}/*END*/;
 
     const $ = (s) => document.querySelector(s);
     const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
@@ -180,13 +202,56 @@
       }
     });
 
-    let DATA = null, billing = 'monthly';
+    // ---------- State ----------
+    let DATA = null;
+    const S = { plan: 'premium', billing: 'monthly', on: new Set(), qty: {} };
     const money = (n) => DATA.currency + Math.round(n).toLocaleString('en-PH');
     const per = { monthly: '/mo', yearly: '/yr' };
+    const mult = () => (S.billing === 'yearly' ? 10 : 1);   // yearly = 10x monthly (2 months free)
+    const plan = () => DATA.plans.find((p) => p.id === S.plan);
 
+    // Can this add-on be chosen with the current plan and choices? Returns null if yes, or why not.
+    function blocked(a) {
+      if (a.includedIn && a.includedIn.includes(S.plan)) return 'Included in ' + plan().name;
+      if (a.plans && !a.plans.includes(S.plan)) return 'Needs ' + a.plans.map((id) => DATA.plans.find((p) => p.id === id).name).join(' or ');
+      if (a.requires && !S.on.has(a.requires)) return 'Needs ' + DATA.addons.find((x) => x.id === a.requires).name;
+      return null;
+    }
+
+    // Drop anything the current plan no longer allows (repeat: removing one can block another).
+    function prune() {
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const a of DATA.addons) if (S.on.has(a.id) && blocked(a)) { S.on.delete(a.id); changed = true; }
+      }
+    }
+
+    function quote() {
+      const p = plan(), lines = [];
+      let monthly = p.monthly;
+      lines.push({ label: p.name + ' plan', amount: p.monthly });
+      for (const a of DATA.addons) {
+        if (!S.on.has(a.id)) continue;
+        const q = a.qty ? (S.qty[a.id] || 1) : 1;
+        lines.push({ label: a.name + (a.qty ? ' × ' + q : ''), amount: a.monthly * q });
+        monthly += a.monthly * q;
+      }
+      let bundle = null;
+      for (const b of DATA.bundles) {
+        if (b.plan === S.plan && b.addons.every((id) => S.on.has(id))) {
+          const full = p.monthly + b.addons.reduce((s, id) => s + DATA.addons.find((a) => a.id === id).monthly, 0);
+          if (full > b.monthly) { bundle = { name: b.name, save: full - b.monthly }; monthly -= bundle.save; }
+        }
+      }
+      return { lines, bundle, monthly, total: monthly * mult() };
+    }
+
+    // ---------- Render ----------
     function render(data) {
       DATA = data;
-      try { billing = sessionStorage.getItem('pd-billing') === 'yearly' ? 'yearly' : 'monthly'; } catch {}
+      S.plan = data.defaultPlan || data.plans[0].id;
+      try { if (sessionStorage.getItem('pd-billing') === 'yearly') S.billing = 'yearly'; } catch {}
       const feat = (p) => data.features.map((f) => `<li class="${f[p.id] ? '' : 'no'}">${esc(f.name)}</li>`).join('');
 
       $('#desk').innerHTML = `
@@ -201,39 +266,46 @@
 
         <section>
           <div class="head">
-            <h2>Plans</h2>
+            <h2><span class="step">1</span>Choose your plan</h2>
             <div class="seg" role="group" aria-label="Billing">
-              ${['monthly', 'yearly'].map((b) => `<button type="button" data-billing="${b}" aria-pressed="${b === billing}">${b[0].toUpperCase() + b.slice(1)}</button>`).join('')}
+              ${['monthly', 'yearly'].map((b) => `<button type="button" data-billing="${b}">${b === 'monthly' ? 'Monthly' : 'Yearly · 2 months free'}</button>`).join('')}
             </div>
           </div>
           <div class="plans">
             ${data.plans.map((p) => `
-              <article class="plan glass ${p.id === 'premium' ? 'feature' : ''}">
+              <article class="plan glass" data-plan-card="${p.id}">
                 <h3>${esc(p.name)}</h3>
-                <div class="price" data-plan="${p.id}"></div>
-                <p class="who" style="margin:0">${esc(p.who)}</p>
+                <div class="price" data-plan-price="${p.id}"></div>
+                <p class="who">${esc(p.who)}</p>
                 <div class="chips">
                   <span class="chip">${p.accounts} TikTok accounts</span>
                   <span class="chip">${p.seats} PC</span>
                 </div>
                 <ul>${feat(p)}</ul>
+                <button type="button" class="choose" data-choose="${p.id}"></button>
               </article>`).join('')}
           </div>
         </section>
 
         <section>
-          <h2>Add-ons <span class="muted" style="font-weight:400;font-size:.9rem">— add to any plan where available</span></h2>
-          <div class="table-wrap glass">
-            <table>
-              <thead><tr><th>Add-on</th><th>Monthly</th><th>Available on</th></tr></thead>
-              <tbody>
-                ${data.addons.map((a) => `<tr>
-                  <td><b>${esc(a.name)}</b><span class="sub">${esc(a.detail)}</span></td>
-                  <td class="num">+${money(a.monthly)}/mo</td>
-                  <td>${esc(a.availability)}</td>
-                </tr>`).join('')}
-              </tbody>
-            </table>
+          <h2><span class="step">2</span>Add what you need</h2>
+          <div class="builder">
+            <div class="addons glass" id="addons"></div>
+            <aside class="summary glass" aria-live="polite">
+              <div class="eyebrow">Your quote</div>
+              <div class="lines" id="lines"></div>
+              <div class="total"><span class="muted" id="total-label"></span><span class="big" id="total"></span></div>
+              <div id="send-area">
+                <form id="quote-form" novalidate>
+                  <label>Your name<input class="text-in" id="q-name" name="name" autocomplete="name" required /></label>
+                  <label>How can we reach you? (Messenger, Discord, email or phone)<input class="text-in" id="q-contact" name="contact" required /></label>
+                  <label>Anything else? (optional)<textarea class="text-in" id="q-message" name="message"></textarea></label>
+                  <div class="hp" aria-hidden="true"><label>Leave empty<input id="q-bot" name="bot-field" tabindex="-1" autocomplete="off" /></label></div>
+                  <button class="btn" id="send-btn" type="submit">Send quote</button>
+                  <div class="err" id="q-err" role="alert"></div>
+                </form>
+              </div>
+            </aside>
           </div>
         </section>
 
@@ -244,7 +316,7 @@
               <div style="display:grid;gap:4px;min-width:0">
                 <h3>${esc(b.name)}</h3>
                 <div class="muted">${esc(b.includes)}</div>
-                <div class="chips"><span class="chip" style="color:var(--teal);border-color:rgba(45,212,191,.45)">${esc(b.tag)}</span></div>
+                <div class="chips"><span class="chip" style="color:var(--teal);border-color:rgba(45,212,191,.45)">${esc(b.tag)} · applied automatically</span></div>
               </div>
               <div class="price">${money(b.monthly)}<small>/mo</small><s>${money(b.compareAt)}</s></div>
             </div>`).join('')}
@@ -252,26 +324,97 @@
 
         <section>
           <h2>Good to know</h2>
-          <ul class="todo">${data.goodToKnow.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
+          <ul class="notes">${data.goodToKnow.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
         </section>
 
         <p class="foot">Prices in Philippine pesos. Questions? Ask us on Discord.</p>`;
 
-      $('#desk').querySelectorAll('[data-billing]').forEach((b) => b.addEventListener('click', () => setBilling(b.dataset.billing)));
+      $('#desk').querySelectorAll('[data-billing]').forEach((b) => b.addEventListener('click', () => {
+        S.billing = b.dataset.billing;
+        try { sessionStorage.setItem('pd-billing', S.billing); } catch {}
+        update();
+      }));
+      $('#desk').querySelectorAll('[data-choose]').forEach((b) => b.addEventListener('click', () => { S.plan = b.dataset.choose; prune(); update(); }));
       $('#relock').addEventListener('click', () => { $('#desk').innerHTML = ''; DATA = null; $('#desk').hidden = true; $('#lock').hidden = false; $('#pass').focus(); });
-      setBilling(billing);
+      $('#quote-form').addEventListener('submit', sendQuote);
+      update();
     }
 
-    function setBilling(b) {
-      billing = b;
-      try { sessionStorage.setItem('pd-billing', b); } catch {}
-      document.querySelectorAll('[data-billing]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.billing === b)));
+    function update() {
+      document.querySelectorAll('[data-billing]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.billing === S.billing)));
       DATA.plans.forEach((p) => {
-        const el = document.querySelector(`.price[data-plan="${p.id}"]`);
-        el.innerHTML = `${money(p[b])}<small>${per[b]}</small>`;
+        document.querySelector(`[data-plan-price="${p.id}"]`).innerHTML = `${money(p[S.billing])}<small>${per[S.billing]}</small>`;
+        const card = document.querySelector(`[data-plan-card="${p.id}"]`);
+        card.classList.toggle('selected', p.id === S.plan);
+        const btn = card.querySelector('[data-choose]');
+        btn.textContent = p.id === S.plan ? 'Selected' : 'Choose ' + p.name;
+        btn.setAttribute('aria-pressed', String(p.id === S.plan));
       });
+
+      $('#addons').innerHTML = DATA.addons.map((a) => {
+        const why = blocked(a), on = S.on.has(a.id), q = S.qty[a.id] || 1;
+        const amt = why && why.startsWith('Included') ? 'Included' : '+' + money(a.monthly * (a.qty && on ? q : 1) * mult()) + per[S.billing];
+        return `<label class="addon ${why ? 'off' : ''}">
+          <input type="checkbox" data-addon="${a.id}" ${on ? 'checked' : ''} ${why ? 'disabled' : ''} />
+          <span><b>${esc(a.name)}</b><span class="sub">${esc(a.detail)}</span>${why ? `<span class="why">${esc(why)}</span>` : ''}
+            ${a.qty && on ? `<span class="qty"><button type="button" data-dec="${a.id}" aria-label="Fewer">−</button><output>${q}</output><button type="button" data-inc="${a.id}" aria-label="More">+</button></span>` : ''}
+          </span>
+          <span class="amt">${amt}</span>
+        </label>`;
+      }).join('');
+      $('#addons').querySelectorAll('[data-addon]').forEach((c) => c.addEventListener('change', () => {
+        if (c.checked) S.on.add(c.dataset.addon); else S.on.delete(c.dataset.addon);
+        prune(); update();
+      }));
+      const step = (id, d) => {
+        const a = DATA.addons.find((x) => x.id === id);
+        S.qty[id] = Math.min(a.max || 99, Math.max(1, (S.qty[id] || 1) + d));
+        update();
+      };
+      $('#addons').querySelectorAll('[data-inc]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); step(b.dataset.inc, 1); }));
+      $('#addons').querySelectorAll('[data-dec]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); step(b.dataset.dec, -1); }));
+
+      const q = quote();
+      $('#lines').innerHTML = q.lines.map((l) => `<div class="line"><span>${esc(l.label)}</span><b>${money(l.amount * mult())}</b></div>`).join('')
+        + (q.bundle ? `<div class="line save"><span>${esc(q.bundle.name)} bundle</span><b>−${money(q.bundle.save * mult())}</b></div>` : '');
+      $('#total-label').textContent = S.billing === 'yearly' ? 'Total per year' : 'Total per month';
+      $('#total').textContent = money(q.total);
     }
 
+    function summaryText(q) {
+      const p = plan();
+      return [
+        `Plan: ${p.name} (${S.billing === 'yearly' ? 'Yearly' : 'Monthly'})`,
+        ...q.lines.map((l) => `- ${l.label}: ${money(l.amount * mult())}`),
+        ...(q.bundle ? [`- ${q.bundle.name} bundle: -${money(q.bundle.save * mult())}`] : []),
+        `Total: ${money(q.total)}${per[S.billing]}`,
+      ].join('\n');
+    }
+
+    async function sendQuote(e) {
+      e.preventDefault();
+      const name = $('#q-name').value.trim(), contact = $('#q-contact').value.trim();
+      if (!name || !contact) { $('#q-err').textContent = 'Add your name and a way to reach you, then send.'; return; }
+      const q = quote(), btn = $('#send-btn');
+      btn.disabled = true; btn.textContent = 'Sending…'; $('#q-err').textContent = '';
+      const body = new URLSearchParams({
+        'form-name': 'quote', name, contact,
+        message: $('#q-message').value.trim(),
+        plan: plan().name, billing: S.billing,
+        addons: DATA.addons.filter((a) => S.on.has(a.id)).map((a) => a.qty ? `${a.name} x${S.qty[a.id] || 1}` : a.name).join(', ') || 'None',
+        total: money(q.total) + per[S.billing],
+        summary: summaryText(q),
+        'bot-field': $('#q-bot').value,
+      });
+      try {
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        $('#send-area').innerHTML = `<div class="sent">${esc(DATA.quote.thanks)}<br><span class="muted" style="font-size:.85rem">${esc(plan().name)} · ${esc(money(q.total) + per[S.billing])}</span></div>`;
+      } catch {
+        $('#q-err').textContent = DATA.quote.fail;
+        btn.disabled = false; btn.textContent = 'Send quote';
+      }
+    }
   </script>
 </body>
 </html>
