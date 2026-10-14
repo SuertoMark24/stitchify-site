@@ -51,7 +51,7 @@
     input, textarea { font: inherit; }
 
     .btn { padding: 12px 18px; border-radius: 12px; border: 0; font-weight: 600; color: #1a1005; background: linear-gradient(135deg, var(--primary-2), var(--primary)); }
-    .btn[disabled] { opacity: 0.6; cursor: wait; }
+    .btn.busy { opacity: 0.6; cursor: wait; }
     .err { color: var(--bad); font-size: 0.9rem; min-height: 1.3em; }
 
     /* ---- Lock ---- */
@@ -117,10 +117,21 @@
     .line.save b { color: var(--ok); }
     .total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
     .total .big { font-family: var(--display); font-size: 1.9rem; font-weight: 700; color: var(--primary-2); font-variant-numeric: tabular-nums; }
-    .summary form { display: grid; gap: 8px; }
-    .summary label { font-size: 0.82rem; color: var(--muted); display: grid; gap: 4px; }
-    .summary textarea { min-height: 70px; resize: vertical; }
     .sent { padding: 12px 14px; border-radius: 12px; background: rgba(52, 211, 153, .12); border: 1px solid rgba(52, 211, 153, .4); color: var(--text); }
+    dialog#report { width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border-radius: var(--radius); border: 1px solid var(--border); background: #1c1611; color: var(--text); overflow: auto; }
+    dialog#report::backdrop { background: rgba(8, 6, 4, 0.72); backdrop-filter: blur(4px); }
+    .report-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 20px 20px 0; margin: 0; }
+    .report-head h2 { font-family: var(--display); font-size: 1.15rem; margin-top: 2px; }
+    .report-body { display: grid; gap: 14px; padding: 16px 20px 20px; }
+    .report-plan { padding: 12px 14px; border-radius: 12px; background: rgba(0,0,0,.25); border: 1px solid var(--border); font-size: 0.92rem; color: var(--muted); }
+    .report-plan b { color: var(--primary-2); font-family: var(--display); }
+    #report form#quote-form { display: grid; gap: 8px; }
+    #report label { font-size: 0.82rem; color: var(--muted); display: grid; gap: 4px; }
+    #report textarea { min-height: 64px; resize: vertical; }
+    #report label.terms { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,.2); color: var(--text); font-size: 0.88rem; cursor: pointer; }
+    #report label.terms input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--primary); }
+    #report label.terms a { color: var(--primary-2); text-decoration: underline; }
+    .btn[disabled]:not(.busy) { opacity: 0.45; cursor: not-allowed; }
     .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
     .bundle { padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; border-color: rgba(45, 212, 191, 0.45); }
@@ -140,14 +151,6 @@
   </style>
 </head>
 <body>
-  <!-- Static copy of the quote form so Netlify Forms detects it at deploy time. The visible form is
-       rendered after unlocking and submits these same field names. -->
-  <form name="quote" netlify netlify-honeypot="bot-field" hidden>
-    <input name="name" /><input name="contact" /><textarea name="message"></textarea>
-    <input name="plan" /><input name="billing" /><input name="addons" /><input name="total" />
-    <textarea name="summary"></textarea><input name="bot-field" />
-  </form>
-
   <main class="wrap">
     <div class="lock" id="lock">
       <div class="lock-card glass">
@@ -168,10 +171,40 @@
     <div class="desk" id="desk" hidden></div>
   </main>
 
+  <dialog id="report" aria-labelledby="report-title">
+    <form method="dialog" class="report-head">
+      <div>
+        <div class="eyebrow">Quote report</div>
+        <h2 id="report-title">Your Stitchify Pro quote</h2>
+        <div class="muted" id="report-date" style="font-size:.85rem"></div>
+      </div>
+      <button class="lockbtn" value="close" aria-label="Close">Close</button>
+    </form>
+    <div class="report-body">
+      <div class="report-plan" id="report-plan"></div>
+      <div class="lines" id="report-lines"></div>
+      <div class="total"><span class="muted" id="report-total-label"></span><span class="big" id="report-total"></span></div>
+      <div id="report-send">
+        <form id="quote-form" novalidate>
+          <label>Your name<input class="text-in" id="q-name" autocomplete="name" required /></label>
+          <label>How can we reach you? (Messenger, Discord, email or phone)<input class="text-in" id="q-contact" required /></label>
+          <label>Anything else? (optional)<textarea class="text-in" id="q-message"></textarea></label>
+          <div class="hp" aria-hidden="true"><label>Leave empty<input id="q-bot" tabindex="-1" autocomplete="off" /></label></div>
+          <label class="terms">
+            <input type="checkbox" id="q-terms" />
+            <span>I have read and agree to the <a href="/#about" target="_blank" rel="noopener">Terms &amp; Contract and the risks of using Stitchify Pro</a> (opens in a new tab).</span>
+          </label>
+          <button class="btn" id="send-btn" type="submit" disabled>Send quote</button>
+          <div class="err" id="q-err" role="alert"></div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
   <script>
     // Encrypted with AES-256-GCM, key derived from the passphrase via PBKDF2-SHA256.
     // Regenerate with the owner's local encrypt script — never paste readable prices here.
-    const PAYLOAD = /*PAYLOAD*/{"v":1,"iter":310000,"salt":"z1TWrjvM4+OfLv2LzwMyJQ==","iv":"9IUuxvsy6ndwONvb","ct":"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"}/*END*/;
+    const PAYLOAD = /*PAYLOAD*/{"v":1,"iter":310000,"salt":"ExTnpB/2iT5jNBLdaP9fZg==","iv":"PM4Dmpekz/wZ7+n6","ct":"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"}/*END*/;
 
     const $ = (s) => document.querySelector(s);
     const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
@@ -189,7 +222,7 @@
     $('#unlock-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = $('#unlock-btn');
-      btn.disabled = true; btn.textContent = 'Unlocking…'; $('#err').textContent = '';
+      btn.disabled = true; btn.classList.add('busy'); btn.textContent = 'Unlocking…'; $('#err').textContent = '';
       try {
         if (!PAYLOAD) throw new Error('empty');
         render(await decrypt($('#pass').value));
@@ -198,7 +231,7 @@
       } catch {
         $('#err').textContent = 'Wrong passphrase. Check it and try again.';
       } finally {
-        btn.disabled = false; btn.textContent = 'Unlock';
+        btn.disabled = false; btn.classList.remove('busy'); btn.textContent = 'Unlock';
       }
     });
 
@@ -295,16 +328,7 @@
               <div class="eyebrow">Your quote</div>
               <div class="lines" id="lines"></div>
               <div class="total"><span class="muted" id="total-label"></span><span class="big" id="total"></span></div>
-              <div id="send-area">
-                <form id="quote-form" novalidate>
-                  <label>Your name<input class="text-in" id="q-name" name="name" autocomplete="name" required /></label>
-                  <label>How can we reach you? (Messenger, Discord, email or phone)<input class="text-in" id="q-contact" name="contact" required /></label>
-                  <label>Anything else? (optional)<textarea class="text-in" id="q-message" name="message"></textarea></label>
-                  <div class="hp" aria-hidden="true"><label>Leave empty<input id="q-bot" name="bot-field" tabindex="-1" autocomplete="off" /></label></div>
-                  <button class="btn" id="send-btn" type="submit">Send quote</button>
-                  <div class="err" id="q-err" role="alert"></div>
-                </form>
-              </div>
+              <button class="btn" id="view-report" type="button">View report</button>
             </aside>
           </div>
         </section>
@@ -336,7 +360,7 @@
       }));
       $('#desk').querySelectorAll('[data-choose]').forEach((b) => b.addEventListener('click', () => { S.plan = b.dataset.choose; prune(); update(); }));
       $('#relock').addEventListener('click', () => { $('#desk').innerHTML = ''; DATA = null; $('#desk').hidden = true; $('#lock').hidden = false; $('#pass').focus(); });
-      $('#quote-form').addEventListener('submit', sendQuote);
+      $('#view-report').addEventListener('click', openReport);
       update();
     }
 
@@ -391,28 +415,56 @@
       ].join('\n');
     }
 
+    // ---------- Report popup ----------
+    // The send form only exists until a quote has gone out; after that the popup is a read-only
+    // copy of what was sent.
+    function openReport() {
+      const q = quote(), p = plan();
+      $('#report-date').textContent = new Date().toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' });
+      $('#report-plan').innerHTML = `Plan: <b>${esc(p.name)}</b> · ${S.billing === 'yearly' ? 'Yearly (2 months free)' : 'Monthly'} · ${p.accounts} TikTok accounts · ${p.seats} PC`;
+      $('#report-lines').innerHTML = $('#lines').innerHTML;
+      $('#report-total-label').textContent = $('#total-label').textContent;
+      $('#report-total').textContent = money(q.total);
+      if ($('#quote-form')) {
+        const terms = $('#q-terms'), send = $('#send-btn');
+        $('#q-err').textContent = '';
+        terms.checked = false;
+        send.disabled = true;                                   // locked until the terms are ticked
+        terms.onchange = () => { send.disabled = !terms.checked; };
+        $('#quote-form').onsubmit = sendQuote;
+      }
+      $('#report').showModal();
+    }
+
     async function sendQuote(e) {
       e.preventDefault();
       const name = $('#q-name').value.trim(), contact = $('#q-contact').value.trim();
+      if (!$('#q-terms').checked) { $('#q-err').textContent = 'Tick the Terms & Contract box to send.'; return; }
       if (!name || !contact) { $('#q-err').textContent = 'Add your name and a way to reach you, then send.'; return; }
       const q = quote(), btn = $('#send-btn');
-      btn.disabled = true; btn.textContent = 'Sending…'; $('#q-err').textContent = '';
-      const body = new URLSearchParams({
-        'form-name': 'quote', name, contact,
-        message: $('#q-message').value.trim(),
-        plan: plan().name, billing: S.billing,
-        addons: DATA.addons.filter((a) => S.on.has(a.id)).map((a) => a.qty ? `${a.name} x${S.qty[a.id] || 1}` : a.name).join(', ') || 'None',
-        total: money(q.total) + per[S.billing],
-        summary: summaryText(q),
-        'bot-field': $('#q-bot').value,
-      });
+      btn.disabled = true; btn.classList.add('busy'); btn.textContent = 'Sending…'; $('#q-err').textContent = '';
       try {
-        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
+        const res = await fetch('/api/send-quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, contact,
+            message: $('#q-message').value.trim(),
+            plan: plan().name,
+            billing: S.billing === 'yearly' ? 'Yearly' : 'Monthly',
+            addons: DATA.addons.filter((a) => S.on.has(a.id)).map((a) => a.qty ? `${a.name} x${S.qty[a.id] || 1}` : a.name).join(', ') || 'None',
+            total: money(q.total) + per[S.billing],
+            summary: summaryText(q),
+            acceptedTerms: true,
+            'bot-field': $('#q-bot').value,
+          }),
+        });
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        $('#send-area').innerHTML = `<div class="sent">${esc(DATA.quote.thanks)}<br><span class="muted" style="font-size:.85rem">${esc(plan().name)} · ${esc(money(q.total) + per[S.billing])}</span></div>`;
+        $('#report-send').innerHTML = `<div class="sent">${esc(DATA.quote.thanks)}</div>`;
+        $('#view-report').textContent = 'View sent quote';
       } catch {
         $('#q-err').textContent = DATA.quote.fail;
-        btn.disabled = false; btn.textContent = 'Send quote';
+        btn.disabled = false; btn.classList.remove('busy'); btn.textContent = 'Send quote';
       }
     }
   </script>
