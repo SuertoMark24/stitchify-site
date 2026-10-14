@@ -9,3 +9,10 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Owner-only pages: never indexed. (Their content is encrypted in the page itself.)
+[[headers]]
+  for = "/internal/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+    Cache-Control = "no-store"
