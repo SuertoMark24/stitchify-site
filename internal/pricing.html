@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="robots" content="noindex, nofollow, noarchive" />
-  <title>Pricing Desk</title>
+  <title>Stitchify Pro Pricing</title>
   <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Owner-only pricing desk. Dark-only by design, like the public site. The pricing itself is
+    /* Private pricing page. Dark-only by design, like the public site. The pricing itself is
        AES-GCM encrypted below and only exists in readable form after the passphrase is entered.
        Layout: lock card centred -> after unlock, one column: plans row, add-ons table, bundle,
-       calculator, rules. */
+       good to know. */
     :root {
       color-scheme: dark;
       --primary: #ff7a18;
@@ -112,23 +112,12 @@
     .bundle h3 { font-family: var(--display); color: var(--teal); }
     .bundle .price s { color: var(--faint); font-size: 1rem; font-weight: 500; margin-left: 8px; }
 
-    .calc { padding: 20px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
-    .calc-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
-    .field { display: grid; gap: 4px; }
-    .field label { font-size: 0.82rem; color: var(--muted); }
-    .field input { width: 100%; padding: 9px 11px; border-radius: 10px; border: 1px solid var(--border); background: rgba(0,0,0,.3); color: var(--text); font-family: var(--display); font-variant-numeric: tabular-nums; }
-    .calc-out { display: grid; gap: 10px; align-content: start; padding: 16px; border-radius: 12px; background: rgba(0,0,0,.25); border: 1px solid var(--border); }
-    .calc-out .big { font-family: var(--display); font-size: 2rem; font-weight: 700; color: var(--primary-2); font-variant-numeric: tabular-nums; }
-    .line { display: flex; justify-content: space-between; gap: 12px; font-size: 0.9rem; color: var(--muted); }
-    .line b { color: var(--text); font-family: var(--display); font-weight: 600; font-variant-numeric: tabular-nums; }
 
-    ol.rules, ul.todo { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; max-width: 80ch; color: var(--muted); }
-    ol.rules li::marker { color: var(--primary-2); font-family: var(--display); }
+    ul.todo { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; max-width: 80ch; color: var(--muted); }
     .foot { color: var(--faint); font-size: 0.8rem; }
 
     @media (max-width: 860px) {
       .plans { grid-template-columns: minmax(0, 1fr); }
-      .calc { grid-template-columns: minmax(0, 1fr); }
     }
     @media (prefers-reduced-motion: no-preference) {
       .desk { animation: rise .35s ease-out both; }
@@ -142,9 +131,9 @@
       <div class="lock-card glass">
         <img src="../assets/logo.svg" alt="" />
         <div>
-          <div class="eyebrow">Owner only</div>
-          <h1>Pricing Desk</h1>
-          <p class="muted" style="margin:6px 0 0">Enter your passphrase to unlock. Nothing on this page is readable without it.</p>
+          <div class="eyebrow">Private pricing</div>
+          <h1>Stitchify Pro Pricing</h1>
+          <p class="muted" style="margin:6px 0 0">Enter the passphrase you were given to view the plans.</p>
         </div>
         <form id="unlock-form" autocomplete="off">
           <input id="pass" type="password" placeholder="Passphrase" aria-label="Passphrase" autocomplete="current-password" required />
@@ -160,7 +149,7 @@
   <script>
     // Encrypted with AES-256-GCM, key derived from the passphrase via PBKDF2-SHA256.
     // Regenerate with the owner's local encrypt script — never paste readable prices here.
-    const PAYLOAD = /*PAYLOAD*/{"v":1,"iter":310000,"salt":"kphCb7Y/S2nZ1wSbCHgtww==","iv":"wf3fWgwzgzFDAcCL","ct":"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"}/*END*/;
+    const PAYLOAD = /*PAYLOAD*/{"v":1,"iter":310000,"salt":"eQEpLZiybV03/A+4kZGsqA==","iv":"o1gVzimoTNWthci3","ct":"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"}/*END*/;
 
     const $ = (s) => document.querySelector(s);
     const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
@@ -193,28 +182,28 @@
 
     let DATA = null, billing = 'monthly';
     const money = (n) => DATA.currency + Math.round(n).toLocaleString('en-PH');
-    const per = { monthly: '/mo', yearly: '/yr', lifetime: ' once' };
+    const per = { monthly: '/mo', yearly: '/yr' };
 
     function render(data) {
       DATA = data;
-      try { billing = sessionStorage.getItem('pd-billing') || 'monthly'; } catch {}
+      try { billing = sessionStorage.getItem('pd-billing') === 'yearly' ? 'yearly' : 'monthly'; } catch {}
       const feat = (p) => data.features.map((f) => `<li class="${f[p.id] ? '' : 'no'}">${esc(f.name)}</li>`).join('');
 
       $('#desk').innerHTML = `
         <div class="head">
           <div>
-            <div class="eyebrow">Internal · not linked · ${esc(data.version)}</div>
+            <div class="eyebrow">Plans &amp; add-ons</div>
             <h1>Stitchify Pro <span>pricing</span></h1>
           </div>
           <button class="lockbtn" id="relock" type="button">Lock</button>
         </div>
-        <p class="note glass">${esc(data.note)}</p>
+        <p class="note glass">${esc(data.intro)}</p>
 
         <section>
           <div class="head">
             <h2>Plans</h2>
             <div class="seg" role="group" aria-label="Billing">
-              ${['monthly', 'yearly', 'lifetime'].map((b) => `<button type="button" data-billing="${b}" aria-pressed="${b === billing}">${b[0].toUpperCase() + b.slice(1)}</button>`).join('')}
+              ${['monthly', 'yearly'].map((b) => `<button type="button" data-billing="${b}" aria-pressed="${b === billing}">${b[0].toUpperCase() + b.slice(1)}</button>`).join('')}
             </div>
           </div>
           <div class="plans">
@@ -226,7 +215,6 @@
                 <div class="chips">
                   <span class="chip">${p.accounts} TikTok accounts</span>
                   <span class="chip">${p.seats} PC</span>
-                  <span class="chip">Edition: ${esc(p.edition)}</span>
                 </div>
                 <ul>${feat(p)}</ul>
               </article>`).join('')}
@@ -234,18 +222,15 @@
         </section>
 
         <section>
-          <h2>Add-ons <span class="muted" style="font-weight:400;font-size:.9rem">— the per-licence switches on the Subscription page</span></h2>
+          <h2>Add-ons <span class="muted" style="font-weight:400;font-size:.9rem">— add to any plan where available</span></h2>
           <div class="table-wrap glass">
             <table>
-              <thead><tr><th>Add-on</th><th>Monthly</th><th>Setup</th><th>Available on</th><th>Switch</th><th>Why this price</th></tr></thead>
+              <thead><tr><th>Add-on</th><th>Monthly</th><th>Available on</th></tr></thead>
               <tbody>
                 ${data.addons.map((a) => `<tr>
                   <td><b>${esc(a.name)}</b><span class="sub">${esc(a.detail)}</span></td>
-                  <td class="num">+${money(a.monthly)}</td>
-                  <td class="num">${a.setup ? money(a.setup) : '—'}</td>
+                  <td class="num">+${money(a.monthly)}/mo</td>
                   <td>${esc(a.availability)}</td>
-                  <td class="muted">${esc(a.switch)}</td>
-                  <td class="muted">${esc(a.why)}</td>
                 </tr>`).join('')}
               </tbody>
             </table>
@@ -259,51 +244,22 @@
               <div style="display:grid;gap:4px;min-width:0">
                 <h3>${esc(b.name)}</h3>
                 <div class="muted">${esc(b.includes)}</div>
-                <div class="muted" style="font-size:.88rem">${esc(b.why)}</div>
+                <div class="chips"><span class="chip" style="color:var(--teal);border-color:rgba(45,212,191,.45)">${esc(b.tag)}</span></div>
               </div>
               <div class="price">${money(b.monthly)}<small>/mo</small><s>${money(b.compareAt)}</s></div>
             </div>`).join('')}
         </section>
 
         <section>
-          <h2>Revenue calculator <span class="muted" style="font-weight:400;font-size:.9rem">— monthly customers</span></h2>
-          <div class="calc glass">
-            <div class="calc-inputs" id="calc-inputs">
-              ${data.plans.map((p) => field('c-' + p.id, p.name + ' customers')).join('')}
-              ${data.bundles.map((b) => field('c-' + b.id, b.name + ' customers')).join('')}
-              ${data.addons.map((a) => field('a-' + a.id, a.name + ' (count)')).join('')}
-            </div>
-            <div class="calc-out">
-              <div class="eyebrow">Monthly recurring</div>
-              <div class="big" id="mrr">${money(0)}</div>
-              <div class="line"><span>Per year at this rate</span><b id="arr">${money(0)}</b></div>
-              <div class="line"><span>One-time setup fees</span><b id="setup">${money(0)}</b></div>
-              <div class="line"><span>Paying customers</span><b id="custs">0</b></div>
-            </div>
-          </div>
+          <h2>Good to know</h2>
+          <ul class="todo">${data.goodToKnow.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
         </section>
 
-        <section>
-          <h2>Rules that protect you</h2>
-          <ol class="rules">${data.rules.map((r) => `<li>${esc(r)}</li>`).join('')}</ol>
-        </section>
-
-        <section>
-          <h2>Before launch</h2>
-          <ul class="todo">${data.todo.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
-        </section>
-
-        <p class="foot">Readable only after unlocking. Locking or closing the tab clears it from the page.</p>`;
+        <p class="foot">Prices in Philippine pesos. Questions? Ask us on Discord.</p>`;
 
       $('#desk').querySelectorAll('[data-billing]').forEach((b) => b.addEventListener('click', () => setBilling(b.dataset.billing)));
       $('#relock').addEventListener('click', () => { $('#desk').innerHTML = ''; DATA = null; $('#desk').hidden = true; $('#lock').hidden = false; $('#pass').focus(); });
-      $('#calc-inputs').addEventListener('input', calc);
       setBilling(billing);
-      calc();
-    }
-
-    function field(id, label) {
-      return `<div class="field"><label for="${id}">${esc(label)}</label><input id="${id}" type="number" min="0" step="1" value="0" inputmode="numeric" /></div>`;
     }
 
     function setBilling(b) {
@@ -316,17 +272,6 @@
       });
     }
 
-    function calc() {
-      const n = (id) => Math.max(0, parseInt(document.getElementById(id)?.value || '0', 10) || 0);
-      let mrr = 0, setup = 0, custs = 0;
-      DATA.plans.forEach((p) => { const c = n('c-' + p.id); mrr += c * p.monthly; custs += c; });
-      DATA.bundles.forEach((b) => { const c = n('c-' + b.id); mrr += c * b.monthly; custs += c; });
-      DATA.addons.forEach((a) => { const c = n('a-' + a.id); mrr += c * a.monthly; setup += c * (a.setup || 0); });
-      $('#mrr').textContent = money(mrr);
-      $('#arr').textContent = money(mrr * 12);
-      $('#setup').textContent = money(setup);
-      $('#custs').textContent = custs;
-    }
   </script>
 </body>
 </html>
