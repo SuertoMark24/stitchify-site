@@ -122,19 +122,147 @@ if (relEl) {
     </div>`).join("");
 }
 
-/* ---- Tab switching (Home / Docs / Patch) via hash ---- */
+/* ---- Tab switching (Home / Docs / Patch / About) via hash ----
+   A view hash (#docs) swaps views and lands at the top. Any other hash (#features,
+   #pricing) is a section inside Home: show Home if needed, then scroll to that section
+   instead of jumping to the top. */
 const VIEW_IDS = ["home", "docs", "patch", "about"];
+let currentView = null;
 function showView() {
   const hash = location.hash.slice(1);
-  const activeId = VIEW_IDS.includes(hash) ? hash : "home";
+  const isView = VIEW_IDS.includes(hash);
+  const activeId = isView ? hash : "home";
+  const changed = activeId !== currentView;
+  currentView = activeId;
   VIEW_IDS.forEach((id) => document.getElementById(id)?.classList.toggle("active", id === activeId));
   document.querySelectorAll(".nav-links a[data-tab]").forEach((a) => {
     a.classList.toggle("active", a.getAttribute("href") === "#" + activeId);
   });
-  window.scrollTo(0, 0);
+  const section = !isView && hash ? document.getElementById(hash) : null;
+  // "instant" overrides the CSS smooth scroll: a fresh view should simply open at the top.
+  if (section) section.scrollIntoView({ behavior: changed ? "instant" : "smooth" });
+  else if (changed || isView) window.scrollTo({ top: 0, behavior: "instant" });
 }
 window.addEventListener("hashchange", showView);
 showView();
+
+/* ---- Phone menu ---- */
+(function navMenu() {
+  const toggle = document.querySelector(".nav-toggle");
+  const links = document.getElementById("navLinks");
+  if (!toggle || !links) return;
+  function set(open) {
+    links.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  toggle.addEventListener("click", () => set(!links.classList.contains("is-open")));
+  links.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && links.classList.contains("is-open")) { set(false); toggle.focus(); }
+  });
+  document.addEventListener("click", (e) => {
+    if (links.classList.contains("is-open") && !e.target.closest(".nav")) set(false);
+  });
+})();
+
+/* ============================================================================
+   POSTING QUEUE — the hero illustration. Every STEP ms the row that is posting
+   becomes posted (and the counter ticks), the next scheduled row starts posting,
+   and once more than two rows are posted the oldest slides out of the top and
+   rejoins the bottom as scheduled, with the next 30-minute slot. It's markup-driven:
+   the rows in index.html are the cast. Pauses off-screen and in background tabs;
+   with reduced motion it stays as a still snapshot.
+   ============================================================================ */
+(function postingQueue() {
+  const root = document.getElementById("queue");
+  if (!root) return;
+  const list = root.querySelector(".q-list");
+  const countEl = root.querySelector("[data-q-count]");
+  const STEP = 1800;
+  const LABELS = { scheduled: "Scheduled", posting: "Posting", posted: "Posted" };
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  root.style.setProperty("--q-step", STEP + "ms");
+
+  // The next free slot follows the last row's time, 30 minutes apart.
+  const toMin = (t) => {
+    const [, h, m, ap] = t.match(/(\d+):(\d+)\s*(AM|PM)/);
+    return ((+h % 12) + (ap === "PM" ? 12 : 0)) * 60 + +m;
+  };
+  const fmt = (min) => {
+    const h24 = Math.floor(min / 60) % 24, m = min % 60;
+    return `${((h24 + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h24 < 12 ? "AM" : "PM"}`;
+  };
+  const rows = () => Array.from(list.children);
+  let nextSlot = toMin(rows().at(-1).querySelector(".q-time").textContent) + 30;
+  let count = parseInt(countEl?.textContent, 10) || 0;
+
+  function setState(row, state) {
+    row.dataset.state = state;
+    row.querySelector(".q-status").dataset.label = LABELS[state];
+  }
+  rows().forEach((r) => setState(r, r.dataset.state));
+
+  function recycle(row) {
+    row.classList.add("is-leaving");
+    setTimeout(() => {
+      row.classList.remove("is-leaving");
+      row.classList.add("is-entering");
+      setState(row, "scheduled");
+      row.querySelector(".q-time").textContent = fmt(nextSlot);
+      nextSlot += 30;
+      list.appendChild(row);
+      requestAnimationFrame(() => requestAnimationFrame(() => row.classList.remove("is-entering")));
+    }, 560);
+  }
+
+  function tick() {
+    const all = rows();
+    const posting = all.find((r) => r.dataset.state === "posting");
+    if (posting) {
+      setState(posting, "posted");
+      count += 1;
+      if (countEl) {
+        countEl.textContent = count;
+        countEl.classList.remove("bump");
+        void countEl.offsetWidth;   // restart the bump animation
+        countEl.classList.add("bump");
+      }
+    }
+    const next = all.find((r) => r.dataset.state === "scheduled");
+    if (next) setState(next, "posting");
+    const posted = all.filter((r) => r.dataset.state === "posted");
+    if (posted.length > 2) recycle(posted[0]);
+  }
+
+  let timer = null;
+  let onScreen = true;
+  let ready = false;
+  function run() {
+    clearInterval(timer);
+    timer = null;
+    if (!ready || reduce.matches || !onScreen || document.hidden) return;
+    timer = setInterval(tick, STEP);
+  }
+  // Let the page-load entrance finish before the loop starts moving rows around.
+  setTimeout(() => { root.classList.add("is-ready"); ready = true; run(); }, 1700);
+  document.addEventListener("visibilitychange", run);
+  reduce.addEventListener?.("change", run);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; run(); }, { threshold: 0.2 }).observe(root);
+  }
+})();
+
+/* ---- Workflow track: draw the stitch line once it scrolls into view ---- */
+(function workflowTrack() {
+  const track = document.getElementById("workflowTrack");
+  if (!track) return;
+  if (!("IntersectionObserver" in window)) { track.classList.add("is-drawn"); return; }
+  const io = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { track.classList.add("is-drawn"); io.disconnect(); }
+  }, { threshold: 0.35 });
+  io.observe(track);
+})();
 
 /* ---- Footer year ---- */
 const yr = document.getElementById("year");
@@ -152,7 +280,7 @@ if (yr) yr.textContent = new Date().getFullYear();
    ============================================================================ */
 (function reviewCarousel() {
   const root = document.getElementById("reviewCarousel");
-  if (!root) return;
+  if (!root || root.hidden) return;   // hidden until real reviews exist (see index.html)
   const stage = root.querySelector(".rv-stage");
   const cards = Array.from(root.querySelectorAll(".rv-card"));
   const dotsWrap = root.querySelector(".rv-dots");

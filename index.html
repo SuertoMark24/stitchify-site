@@ -8,6 +8,7 @@
   <meta property="og:title" content="Stitchify Pro — TikTok content on autopilot" />
   <meta property="og:description" content="Product image → AI script + voiceover → AI video → stitched, scheduled, posted. Across all your TikTok accounts." />
   <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#14100c" />
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,41 +17,124 @@
 </head>
 <body>
 
+  <!-- Icon sprite — every icon on the page is a <use href="#i-…"> into this. Stroke icons inherit
+       stroke/size from .i in the CSS; the Discord mark is a filled shape. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-discord" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.099.246.198.373.292a.077.077 0 0 1-.007.128 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029ZM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.42 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.095 2.157 2.419 0 1.333-.956 2.419-2.157 2.419Zm7.975 0c-1.183 0-2.157-1.086-2.157-2.42 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.095 2.157 2.419 0 1.333-.946 2.419-2.157 2.419Z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.5"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5Z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+  </svg>
+
   <nav class="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="#home"><img src="assets/logo.svg" alt="Stitchify Pro" /> <span>Stitchify Pro</span></a>
-      <div class="nav-links">
+      <a class="brand" href="#home"><img src="assets/logo.svg" alt="" /> <span>Stitchify Pro</span></a>
+      <div class="nav-links" id="navLinks">
         <a href="#home" data-tab class="active">Home</a>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#docs" data-tab>Docs</a>
         <a href="#about" data-tab>About &amp; Risks</a>
       </div>
-      <a class="btn btn-primary" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener">💬 Join Discord</a>
+      <a class="btn btn-primary nav-cta" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg><span>Join Discord</span></a>
+      <button class="nav-toggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Open menu">
+        <svg class="i i-open"><use href="#i-menu"/></svg><svg class="i i-close"><use href="#i-x"/></svg>
+      </button>
     </div>
   </nav>
 
   <!-- ================= HOME (sales) ================= -->
   <div id="home" class="view active">
     <header class="hero">
-      <div class="wrap">
-        <img class="hero-logo" src="assets/logo.svg" alt="Stitchify Pro" />
-        <h1>Your videos post <span class="grad">straight to TikTok</span>. No manual uploading.</h1>
-        <p class="sub">Stitchify Pro queues your content and posts it <strong>directly to every TikTok account</strong> on the schedule you set — no logging in, no copy-paste, no manual uploads. Set it once and walk away.</p>
-        <p class="hero-punch">100 posts a day? <span class="grad">No problem.</span></p>
-        <div class="hero-cta">
-          <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener">💬 Join Discord to Get Access</a>
-          <a class="btn btn-ghost btn-lg" href="#features">See what it does</a>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <h1>Your videos post straight to TikTok. No manual uploading.</h1>
+          <p class="sub">Stitchify Pro queues your content and posts it <strong>directly to every TikTok account</strong> on the schedule you set — no logging in, no copy-paste, no manual uploads. Set it once and walk away.</p>
+          <p class="hero-punch">100 posts a day? No problem.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Join Discord to Get Access</a>
+            <a class="btn btn-ghost btn-lg" href="#features">See what it does</a>
+          </div>
+          <ul class="hero-meta">
+            <li class="mono" data-version>v5.0.9</li>
+            <li>Windows 10/11</li>
+            <li>One-click installer</li>
+          </ul>
         </div>
-        <p class="hero-meta"><span class="mono" data-version>v5.0.9</span> · Windows 10/11 · one-click installer</p>
-        <div class="hero-demo">
-          <video src="assets/demo/loop.mp4" poster="assets/demo/loop-poster.jpg"
-                 autoplay loop muted playsinline preload="auto"
-                 aria-label="Stitchify Pro queue posting directly to TikTok"></video>
-          <button type="button" class="vid-max" onclick="maximizeVideo(this)" aria-label="Maximize video">⛶ Maximize</button>
+
+        <!--
+          LIVE QUEUE — an illustration of the app's posting queue, not live data. js/main.js
+          (postingQueue) moves each row Scheduled → Posting → Posted and recycles posted rows to the
+          bottom with the next 30-minute slot. Thumbnails are frames cut from assets/demo/stich_demo-1080.mp4.
+        -->
+        <div class="queue" id="queue" role="img" aria-label="Illustration of the Stitchify Pro posting queue: clips move from scheduled to posted across several TikTok accounts, 30 minutes apart.">
+          <div class="q-head" aria-hidden="true">
+            <span class="q-title"><span class="q-live"></span>Posting queue</span>
+            <span class="q-count">Posted tonight <b class="mono" data-q-count>14</b></span>
+          </div>
+          <ol class="q-list" aria-hidden="true">
+            <li class="q-row" data-state="posted">
+              <img src="assets/demo/frames/q1.jpg" alt="" width="40" height="52" />
+              <div class="q-info"><b>CIVAGO 26oz tumbler review</b><span>Account 1</span></div>
+              <span class="q-time mono">9:00 PM</span>
+              <span class="q-status"></span>
+            </li>
+            <li class="q-row" data-state="posted">
+              <img src="assets/demo/frames/q4.jpg" alt="" width="40" height="52" />
+              <div class="q-info"><b>KADA Cherry Tumbler 750ML</b><span>Account 2</span></div>
+              <span class="q-time mono">9:30 PM</span>
+              <span class="q-status"></span>
+            </li>
+            <li class="q-row" data-state="posting">
+              <img src="assets/demo/frames/q5.jpg" alt="" width="40" height="52" />
+              <div class="q-info"><b>Hikari Miracle Soap</b><span>Account 3</span></div>
+              <span class="q-time mono">10:00 PM</span>
+              <span class="q-status"></span>
+            </li>
+            <li class="q-row" data-state="scheduled">
+              <img src="assets/demo/frames/q2.jpg" alt="" width="40" height="52" />
+              <div class="q-info"><b>CIVAGO cover poster</b><span>Account 4</span></div>
+              <span class="q-time mono">10:30 PM</span>
+              <span class="q-status"></span>
+            </li>
+            <li class="q-row" data-state="scheduled">
+              <img src="assets/demo/frames/q6.jpg" alt="" width="40" height="52" />
+              <div class="q-info"><b>Natasha Geisha 3-in-1</b><span>Account 5</span></div>
+              <span class="q-time mono">11:00 PM</span>
+              <span class="q-status"></span>
+            </li>
+            <li class="q-row" data-state="scheduled">
+              <img src="assets/demo/frames/q3.jpg" alt="" width="40" height="52" />
+              <div class="q-info"><b>CIVAGO product close-up</b><span>Account 6</span></div>
+              <span class="q-time mono">11:30 PM</span>
+              <span class="q-status"></span>
+            </li>
+          </ol>
         </div>
       </div>
     </header>
+
+    <section class="demo" aria-labelledby="demoTitle">
+      <div class="wrap">
+        <figure class="demo-frame">
+          <div class="hero-demo">
+            <video src="assets/demo/loop.mp4" poster="assets/demo/loop-poster.jpg"
+                   autoplay loop muted playsinline preload="auto"
+                   aria-label="Stitchify Pro queue posting directly to TikTok"></video>
+            <button type="button" class="vid-max" onclick="maximizeVideo(this)" aria-label="Maximize video"><svg class="i"><use href="#i-maximize"/></svg>Maximize</button>
+          </div>
+          <figcaption id="demoTitle">The real app: the queue on the left, TikTok Studio filling up on the right.</figcaption>
+        </figure>
+      </div>
+    </section>
 
     <section id="features">
       <div class="wrap">
@@ -58,13 +142,46 @@
           <h2>Everything to run TikTok Shop content at scale</h2>
           <p>One app on your own PC — no cloud, no datacenter-IP bans, your accounts post from your own connection.</p>
         </div>
-        <div class="grid">
-          <div class="card feature"><div class="ic">🎬</div><h3>AI content pipeline</h3><p>Product image → caption + voiceover script (Gemini) → AI video → ElevenLabs voiceover → stitched, ready-to-post clip.</p></div>
-          <div class="card feature"><div class="ic">🧠</div><h3>200+ AI video models</h3><p>Higgsfield + MuAPI: Kling, Veo, Sora, Wan, Seedance and more — image-to-video through a single app, your keys.</p></div>
-          <div class="card feature"><div class="ic">📲</div><h3>Multi-account posting</h3><p>Post now, save as draft, or schedule across unlimited TikTok accounts with isolated, saved sessions.</p></div>
-          <div class="card feature"><div class="ic">🗓️</div><h3>Batch scheduling</h3><p>Queue N posts across accounts with collision-free time slots, hook variants, and smart batching.</p></div>
-          <div class="card feature"><div class="ic">🎙️</div><h3>"Hey Stitch" voice command</h3><p>Schedule a whole batch by talking: "Hey Stitch, schedule this account, batch 1, tomorrow 1 AM, 30 minutes apart."</p></div>
-          <div class="card feature"><div class="ic">📊</div><h3>Rewards dashboard</h3><p>Scrapes your TikTok Studio earnings into an all-time dashboard so nothing rolls out of the window unseen.</p></div>
+
+        <div class="feat-posting">
+          <div class="feat feat-lead">
+            <svg class="i feat-ic"><use href="#i-users"/></svg>
+            <h3>Multi-account posting</h3>
+            <p>Post now, save as draft, or schedule across unlimited TikTok accounts with isolated, saved sessions.</p>
+          </div>
+          <div class="feat">
+            <svg class="i feat-ic"><use href="#i-calendar"/></svg>
+            <h3>Batch scheduling</h3>
+            <p>Queue N posts across accounts with collision-free time slots, hook variants, and smart batching.</p>
+          </div>
+          <div class="feat">
+            <svg class="i feat-ic"><use href="#i-mic"/></svg>
+            <h3>"Hey Stitch" voice command</h3>
+            <p>Schedule a whole batch by talking: "Hey Stitch, schedule this account, batch 1, tomorrow 1 AM, 30 minutes apart."</p>
+          </div>
+          <div class="feat">
+            <svg class="i feat-ic"><use href="#i-chart"/></svg>
+            <h3>Rewards dashboard</h3>
+            <p>Scrapes your TikTok Studio earnings into an all-time dashboard so nothing rolls out of the window unseen.</p>
+          </div>
+        </div>
+
+        <div class="feat-making">
+          <h3 class="feat-group">On Standard and Premium, it makes the videos too</h3>
+          <div class="feat feat-sm">
+            <svg class="i feat-ic"><use href="#i-film"/></svg>
+            <div>
+              <h4>AI content pipeline</h4>
+              <p>Product image → caption + voiceover script (Gemini) → AI video → ElevenLabs voiceover → stitched, ready-to-post clip.</p>
+            </div>
+          </div>
+          <div class="feat feat-sm">
+            <svg class="i feat-ic"><use href="#i-layers"/></svg>
+            <div>
+              <h4>200+ AI video models</h4>
+              <p>Higgsfield + MuAPI: Kling, Veo, Sora, Wan, Seedance and more — image-to-video through a single app, your keys.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -72,17 +189,14 @@
     <section class="spotlight">
       <div class="wrap spotlight-inner">
         <div class="spotlight-copy">
-          <span class="eyebrow">And it builds the videos, too</span>
           <h2>From one product photo to a finished video.</h2>
           <p>Drop in a product image and Stitchify Pro writes the script, generates the video with 200+ AI models, voices it, and stitches it — so the clips it posts to TikTok are made start-to-finish inside the app.</p>
-          <ul class="spotlight-list">
-            <li>✅ Product photo → caption + voiceover script (Gemini)</li>
-            <li>✅ AI video via 200+ models → ElevenLabs voiceover</li>
-            <li>✅ Stitched, captioned, ready-to-post clip</li>
+          <ul class="tick-list">
+            <li><svg class="i"><use href="#i-check"/></svg>Product photo → caption + voiceover script (Gemini)</li>
+            <li><svg class="i"><use href="#i-check"/></svg>AI video via 200+ models → ElevenLabs voiceover</li>
+            <li><svg class="i"><use href="#i-check"/></svg>Stitched, captioned, ready-to-post clip</li>
           </ul>
-          <div class="hero-cta">
-            <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener">💬 Join Discord to Get Access</a>
-          </div>
+          <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Join Discord to Get Access</a>
         </div>
         <div class="spotlight-video">
           <video src="assets/demo/stich_demo-1080.mp4" poster="assets/demo/stich_demo-poster.jpg"
@@ -98,65 +212,59 @@
           <h2>Make a UGC ad in 6 steps</h2>
           <p>Use the app's built-in prompt library with ChatGPT and Google Flow, then post — no AI credits required to get started.</p>
         </div>
-        <div class="steps">
-          <div class="card step"><div class="num">01</div><h3>Product photo → ChatGPT</h3><p>Drop your product image into ChatGPT (or Gemini) to start the ad.</p></div>
-          <div class="card step"><div class="num">02</div><h3>Add the Montage prompt</h3><p>Paste the app's Review Montage prompt — you get a UGC storyboard image.</p></div>
-          <div class="card step"><div class="num">03</div><h3>Add the Cover prompt</h3><p>Generate a matching cover / hero poster with the app's Cover prompt.</p></div>
-          <div class="card step"><div class="num">04</div><h3>Montage → Google Flow</h3><p>Bring the montage image into Google Flow as the reference frame.</p></div>
-          <div class="card step"><div class="num">05</div><h3>Add the Flow script</h3><p>Paste the app's ready-made Flow video script to animate it.</p></div>
-          <div class="card step"><div class="num">06</div><h3>Batch Stitch → TikTok</h3><p>Drop your Flow clips into Stitchify Pro, run Batch Stitch, then post or schedule straight to TikTok.</p></div>
+        <!-- The dashed connectors between steps echo the stitch in the logo; js/main.js adds
+             .is-drawn when the track scrolls into view and they draw in one after another. -->
+        <ol class="track" id="workflowTrack">
+          <li style="--i:0"><span class="track-num">1</span><h3>Product photo → ChatGPT</h3><p>Drop your product image into ChatGPT (or Gemini) to start the ad.</p></li>
+          <li style="--i:1"><span class="track-num">2</span><h3>Add the Montage prompt</h3><p>Paste the app's Review Montage prompt — you get a UGC storyboard image.</p></li>
+          <li style="--i:2"><span class="track-num">3</span><h3>Add the Cover prompt</h3><p>Generate a matching cover / hero poster with the app's Cover prompt.</p></li>
+          <li style="--i:3"><span class="track-num">4</span><h3>Montage → Google Flow</h3><p>Bring the montage image into Google Flow as the reference frame.</p></li>
+          <li style="--i:4"><span class="track-num">5</span><h3>Add the Flow script</h3><p>Paste the app's ready-made Flow video script to animate it.</p></li>
+          <li style="--i:5"><span class="track-num">6</span><h3>Batch Stitch → TikTok</h3><p>Drop your Flow clips into Stitchify Pro, run Batch Stitch, then post or schedule straight to TikTok.</p></li>
+        </ol>
+
+        <div class="setup-strip">
+          <h3>Up and running in minutes</h3>
+          <ol>
+            <li><b>Install.</b> Run the one-click installer — the .NET runtime, FFmpeg, and browser are all bundled. Nothing else to set up.</li>
+            <li><b>Activate.</b> Paste the license key you received. It locks to your PC and unlocks the app.</li>
+            <li><b>Generate &amp; schedule.</b> Add your API keys, log in your TikTok accounts, and start generating + scheduling content.</li>
+          </ol>
         </div>
       </div>
     </section>
 
-    <section>
-      <div class="wrap">
-        <div class="section-head"><h2>Up and running in minutes</h2></div>
-        <div class="steps">
-          <div class="card step"><div class="num">01</div><h3>Install</h3><p>Run the one-click installer — the .NET runtime, FFmpeg, and browser are all bundled. Nothing else to set up.</p></div>
-          <div class="card step"><div class="num">02</div><h3>Activate</h3><p>Paste the license key you received. It locks to your PC and unlocks the app.</p></div>
-          <div class="card step"><div class="num">03</div><h3>Generate &amp; schedule</h3><p>Add your API keys, log in your TikTok accounts, and start generating + scheduling content.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!--
-      TESTIMONIALS — the founder's note sits on top; the customer reviews below it run as a 3D
-      carousel that drifts on its own (hover to pause, drag/swipe or use the arrows to steer it).
-
-      To add a review, copy one .rv-card block and fill in:
-        1. PROFILE  — img src (put the photo in assets/reviews/), the name, and the handle/role
-        2. REVIEW   — the quote: what the app actually changed for them, in their own words
-      Delete any unused placeholder blocks — the carousel counts the cards itself, so 1, 3 or 12
-      all work. If a reviewer has no photo, drop the <img> and .t-avatar shows their initial.
-    -->
     <section id="reviews">
       <div class="wrap">
         <div class="section-head">
-          <h2>Why I built this — and what affiliates say</h2>
-          <p>Real TikTok Shop affiliates running their accounts on Stitchify Pro every day.</p>
+          <h2>Why I built this</h2>
         </div>
 
-        <!-- Founder's note — a note from the maker, not a review, so it stays put above the carousel. -->
-        <div class="card testimonial founder">
-          <div class="t-profile">
-            <!-- me-avatar.jpg is a square 256px head-crop of me.png — a circular avatar crops to
-                 the middle of a full-body shot, which cuts the head off. -->
-            <div class="t-avatar"><img src="assets/reviews/me-avatar.jpg" alt="Mark" onerror="this.remove()" />M</div>
-            <div class="t-who">
-              <div class="t-name">Mark <span class="t-badge">Founder</span></div>
-              <div class="t-handle">TikTok Shop affiliate · builder of Stitchify Pro</div>
-            </div>
+        <!-- Founder's note — a note from the maker, not a review. -->
+        <div class="founder">
+          <div class="founder-photo">
+            <!-- me-avatar.jpg is a square 256px head-crop of me.png. -->
+            <img src="assets/reviews/me-avatar.jpg" alt="Mark, founder of Stitchify Pro" width="256" height="256" onerror="this.remove()" />
           </div>
-          <div class="t-review">
-            <p class="t-welcome">Welcome — I built this for my own accounts first.</p>
+          <div class="founder-note">
+            <p class="founder-welcome">Welcome — I built this for my own accounts first.</p>
             <p>I'm a TikTok Shop affiliate, not a software company. I was running content across several accounts — motor parts, gadgets, home stuff — and losing entire evenings to the same loop: stitch the clips, write the caption, log into one account, upload, wait, log into the next. Making the content took minutes. Posting it took hours.</p>
             <p>So I built Stitchify Pro for myself, to make that part disappear. Now the clips get made, queued, and posted to every account on a schedule I set once. I still decide what goes out — I just don't sit there doing it by hand any more.</p>
             <p>Everything in here exists because I needed it on my own accounts first.</p>
+            <p class="founder-sign"><b>Mark</b> <span>TikTok Shop affiliate, builder of Stitchify Pro</span></p>
           </div>
         </div>
 
-        <div class="rv" id="reviewCarousel" role="group" aria-roledescription="carousel" aria-label="What affiliates say">
+        <!--
+          CUSTOMER REVIEWS — hidden until real reviews come in. To turn the carousel on:
+            1. delete the `hidden` attribute on the .rv div below
+            2. replace each placeholder .rv-card with a real review (photo in assets/reviews/,
+               name, handle, and their own words) and delete any unused cards
+          It's a 3D carousel that drifts on its own (hover to pause, drag/swipe or arrows to
+          steer). The JS counts the cards itself, so 1, 3 or 12 all work. If a reviewer has no
+          photo, drop the <img> and .t-avatar shows their initial.
+        -->
+        <div class="rv" id="reviewCarousel" role="group" aria-roledescription="carousel" aria-label="What affiliates say" hidden>
           <button class="rv-nav rv-prev" type="button" aria-label="Previous review">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
           </button>
@@ -227,71 +335,72 @@
 
     <section id="pricing">
       <div class="wrap">
-        <div class="section-head"><h2>Choose your edition</h2><p>Billed monthly or yearly (yearly = 2 months free), activated online and locked to your machine. Bring your own AI accounts. Ask us on Discord for your quote.</p></div>
+        <div class="section-head section-head-center"><h2>Choose your edition</h2><p>Billed monthly or yearly (yearly = 2 months free), activated online and locked to your machine. Bring your own AI accounts. Ask us on Discord for your quote.</p></div>
         <div class="pricing">
           <div class="card price-card">
-            <div class="tier">Basic</div>
-            <div class="amount">2 <small>TikTok accounts · 1 PC</small></div>
+            <h3 class="tier">Basic</h3>
+            <div class="amount">2 <small>TikTok accounts, 1 PC</small></div>
             <ul class="price-list">
               <li>Auto-posting — queue, schedule &amp; batch post to every account</li>
               <li>CAPTCHA monitor</li>
               <li>Dashboard + rewards tracking</li>
               <li>Account management &amp; storage cleanup</li>
             </ul>
-            <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener" style="width:100%; justify-content:center;">💬 Get your quote</a>
-            <p class="price-note">Monthly or yearly · <a data-contact>contact us for pricing</a></p>
+            <a class="btn btn-primary btn-lg btn-block" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Get your quote</a>
+            <p class="price-note">Monthly or yearly. <a data-contact>Contact us for pricing</a></p>
           </div>
           <div class="card price-card">
-            <div class="tier">Standard</div>
-            <div class="amount">4 <small>TikTok accounts · 1 PC</small></div>
+            <h3 class="tier">Standard</h3>
+            <div class="amount">4 <small>TikTok accounts, 1 PC</small></div>
             <ul class="price-list">
               <li><strong>Everything in Basic, plus:</strong></li>
               <li>Video stitcher — transitions &amp; quality presets</li>
               <li>AI voiceover generator</li>
               <li>Prompt library</li>
             </ul>
-            <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener" style="width:100%; justify-content:center;">💬 Get your quote</a>
-            <p class="price-note">Monthly or yearly · <a data-contact>contact us for pricing</a></p>
+            <a class="btn btn-primary btn-lg btn-block" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Get your quote</a>
+            <p class="price-note">Monthly or yearly. <a data-contact>Contact us for pricing</a></p>
           </div>
           <div class="card price-card">
-            <div class="tier">Premium</div>
-            <div class="amount">6 <small>TikTok accounts · 1 PC</small></div>
+            <h3 class="tier">Premium</h3>
+            <div class="amount">6 <small>TikTok accounts, 1 PC</small></div>
             <ul class="price-list">
               <li><strong>Everything in Standard, plus:</strong></li>
               <li><strong>Product Import</strong> — pull products straight from TikTok Shop</li>
               <li><strong>Affiliates / Batch Stitch</strong> — bulk affiliate folder automation</li>
               <li>Add <strong>AI Automation</strong> — product images &amp; videos made for you (Gemini, Google Flow or ChatGPT)</li>
             </ul>
-            <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener" style="width:100%; justify-content:center;">💬 Get your quote</a>
-            <p class="price-note">Monthly or yearly · <a data-contact>contact us for pricing</a></p>
+            <a class="btn btn-primary btn-lg btn-block" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Get your quote</a>
+            <p class="price-note">Monthly or yearly. <a data-contact>Contact us for pricing</a></p>
           </div>
         </div>
 
         <div class="compare-wrap">
           <table class="compare-table">
+            <caption class="sr-only">What each edition includes</caption>
             <thead>
               <tr>
-                <th class="compare-feature"></th>
-                <th>Basic</th>
-                <th>Standard</th>
-                <th>Premium</th>
+                <th class="compare-feature" scope="col"><span class="sr-only">Feature</span></th>
+                <th scope="col">Basic</th>
+                <th scope="col">Standard</th>
+                <th scope="col">Premium</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="compare-feature">TikTok accounts included</td><td class="yes">2</td><td class="yes">4</td><td class="yes">6</td></tr>
-              <tr><td class="compare-feature">Auto-posting — queue, schedule &amp; batch post</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">CAPTCHA monitor</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">Dashboard + rewards tracking</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">Account management &amp; storage cleanup</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">Video stitcher — transitions &amp; quality presets</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">AI voiceover generator</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">Prompt library</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">Product Import from TikTok Shop</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">Affiliates / Batch Stitch — bulk affiliate folder automation</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
-              <tr><td class="compare-feature">AI Automation — product images &amp; videos via Gemini, Google Flow or ChatGPT</td><td class="no">—</td><td class="no">—</td><td class="yes">Add-on</td></tr>
-              <tr><td class="compare-feature">One-click — everything for a product in one go (with AI Automation)</td><td class="no">—</td><td class="no">—</td><td class="yes">Add-on</td></tr>
-              <tr><td class="compare-feature">Downloader — TikTok, Facebook &amp; YouTube without watermark</td><td class="yes">Add-on</td><td class="yes">Add-on</td><td class="yes">Add-on</td></tr>
-              <tr><td class="compare-feature">Extra TikTok accounts &amp; extra PCs</td><td class="yes">Add-on</td><td class="yes">Add-on</td><td class="yes">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">TikTok accounts included</th><td class="num">2</td><td class="num">4</td><td class="num">6</td></tr>
+              <tr><th class="compare-feature" scope="row">Auto-posting — queue, schedule &amp; batch post</th><td class="yes"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">CAPTCHA monitor</th><td class="yes"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">Dashboard + rewards tracking</th><td class="yes"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">Account management &amp; storage cleanup</th><td class="yes"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">Video stitcher — transitions &amp; quality presets</th><td class="no"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">AI voiceover generator</th><td class="no"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">Prompt library</th><td class="no"></td><td class="yes"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">Product Import from TikTok Shop</th><td class="no"></td><td class="no"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">Affiliates / Batch Stitch — bulk affiliate folder automation</th><td class="no"></td><td class="no"></td><td class="yes"></td></tr>
+              <tr><th class="compare-feature" scope="row">AI Automation — product images &amp; videos via Gemini, Google Flow or ChatGPT</th><td class="no"></td><td class="no"></td><td class="addon">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">One-click — everything for a product in one go (with AI Automation)</th><td class="no"></td><td class="no"></td><td class="addon">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">Downloader — TikTok, Facebook &amp; YouTube without watermark</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">Extra TikTok accounts &amp; extra PCs</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
             </tbody>
           </table>
         </div>
@@ -303,7 +412,7 @@
   <div id="docs" class="view">
     <div class="patch-head">
       <div class="wrap">
-        <div class="section-head" style="margin-bottom:20px;">
+        <div class="section-head">
           <h2>Getting Started</h2>
           <p>Six steps from "just bought it" to your first post going out automatically.</p>
         </div>
@@ -356,9 +465,9 @@
       </div>
 
       <div class="card docs-help">
-        <h3>Still not clicking? 🤔</h3>
+        <h3>Still not clicking?</h3>
         <p>Some of this is easier shown than explained. If you'd rather not figure it out alone, book a paid 1-on-1 session and I'll walk you through your whole setup personally — screen-share, your machine, start to finish.</p>
-        <a class="btn btn-primary btn-lg" data-contact>💬 Book a 1-on-1 Setup Session</a>
+        <a class="btn btn-primary btn-lg" data-contact>Book a 1-on-1 Setup Session</a>
       </div>
     </div>
   </div>
@@ -367,30 +476,33 @@
   <div id="patch" class="view">
     <div class="patch-head">
       <div class="wrap">
-        <div class="section-head" style="margin-bottom:20px;">
+        <div class="section-head">
           <h2>Patch &amp; Updates</h2>
           <p>Already have Stitchify Pro? Ask in Discord for the latest patch, then: quit the app, unzip, copy the files over your install folder (choose <strong>Replace</strong>), and relaunch. Your license &amp; data are kept.</p>
         </div>
-        <div style="text-align:center; margin-bottom:6px;">
-          <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener">💬 Join Discord for Updates</a>
+        <div class="patch-cta">
+          <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Join Discord for Updates</a>
         </div>
       </div>
+    </div>
+    <div class="wrap">
+      <!-- Filled from RELEASES at the top of js/main.js. -->
+      <div class="releases" id="releases"></div>
     </div>
   </div>
 
   <!-- ================= ABOUT & RISKS ================= -->
   <div id="about" class="view">
-    <style>#about .card p strong, footer .disclaimer strong { color: var(--primary); font-weight: 700; }</style>
     <div class="patch-head">
       <div class="wrap">
-        <div class="section-head" style="margin-bottom:20px;">
+        <div class="section-head">
           <h2>Risks, Liability &amp; Terms of Use</h2>
           <p>Read this before you connect a real TikTok account. Plain language, no fine print games.</p>
         </div>
       </div>
     </div>
     <div class="wrap">
-      <div class="docs-steps">
+      <div class="docs-steps risks">
         <div class="card">
           <h3>What Stitchify Pro actually is</h3>
           <p>Stitchify Pro is a <strong>self-hosted app that runs on your own PC</strong>. It <strong>automates a real browser</strong> to log into and post from your TikTok account(s), and it connects to third-party AI providers (Gemini, ElevenLabs, Higgsfield, MuAPI, etc.) using <strong>API keys you provide and pay for yourself</strong>. It is <strong>not a TikTok product and has no affiliation with TikTok</strong>.</p>
@@ -417,14 +529,14 @@
         </div>
         <div class="card">
           <h3>License</h3>
-          <p>Stitchify Pro is sold as a <strong>one-time license</strong>, activated online and <strong>locked to a single machine</strong>. Contact us with any licensing questions before you buy.</p>
+          <p>Stitchify Pro is sold as a <strong>monthly or yearly subscription</strong>, activated online and <strong>locked to a single machine</strong>. Contact us with any licensing questions before you buy.</p>
         </div>
       </div>
 
       <div class="card docs-help">
-        <h3>Questions before you buy? 🤔</h3>
+        <h3>Questions before you buy?</h3>
         <p>This page is a plain-language summary of real risks, not a substitute for legal advice. If you want to talk through anything on this page first, reach out — happy to answer honestly.</p>
-        <a class="btn btn-primary btn-lg" data-contact>💬 Ask a Question First</a>
+        <a class="btn btn-primary btn-lg" data-contact>Ask a Question First</a>
       </div>
     </div>
   </div>
@@ -433,17 +545,17 @@
   <footer>
     <div class="wrap">
       <div class="foot-top">
-        <a class="brand" href="#home"><img src="assets/logo.svg" alt="Stitchify Pro" style="width:24px;height:24px;" /> <span>Stitchify Pro</span></a>
-        <div>
-          <a href="#features">Features</a> &nbsp;·&nbsp;
-          <a href="#pricing">Pricing</a> &nbsp;·&nbsp;
-          <a href="#about">About &amp; Risks</a> &nbsp;·&nbsp;
+        <a class="brand brand-sm" href="#home"><img src="assets/logo.svg" alt="" /> <span>Stitchify Pro</span></a>
+        <nav class="foot-links" aria-label="Footer">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#about">About &amp; Risks</a>
           <a data-contact>Contact</a>
-        </div>
+        </nav>
       </div>
       <p class="disclaimer"><strong>Use at your own risk.</strong> Stitchify Pro automates TikTok via browser automation. TikTok's Terms of Service may prohibit automated posting; accounts <strong>may be flagged, restricted, or banned</strong>. Rewards figures are TikTok's own <em>estimates</em>, not withdrawable amounts. Intended for personal content management, <strong>not spam</strong>. The authors <strong>assume no responsibility</strong> for actions taken by TikTok or any third party. Full details on the <a href="#about">About &amp; Risks</a> page.</p>
       <div class="smartscreen"><strong>First-time install:</strong> Windows SmartScreen may warn about an unsigned installer — click <strong>More info → Run anyway</strong>.</div>
-      <p style="margin-top:20px;">© <span id="year">2026</span> Stitchify Pro · <span class="mono" data-version>v5.0.9</span></p>
+      <p class="copyright">© <span id="year">2026</span> Stitchify Pro, <span class="mono" data-version>v5.0.9</span></p>
     </div>
   </footer>
 
