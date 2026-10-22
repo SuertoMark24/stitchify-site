@@ -42,7 +42,7 @@
           <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener">💬 Join Discord to Get Access</a>
           <a class="btn btn-ghost btn-lg" href="#features">See what it does</a>
         </div>
-        <p class="hero-meta"><span class="mono" data-version>v3.1.0</span> · Windows 10/11 · one-click installer</p>
+        <p class="hero-meta"><span class="mono" data-version>v5.0.9</span> · Windows 10/11 · one-click installer</p>
         <div class="hero-demo">
           <video src="assets/demo/loop.mp4" poster="assets/demo/loop-poster.jpg"
                  autoplay loop muted playsinline preload="auto"
@@ -116,6 +116,111 @@
           <div class="card step"><div class="num">01</div><h3>Install</h3><p>Run the one-click installer — the .NET runtime, FFmpeg, and browser are all bundled. Nothing else to set up.</p></div>
           <div class="card step"><div class="num">02</div><h3>Activate</h3><p>Paste the license key you received. It locks to your PC and unlocks the app.</p></div>
           <div class="card step"><div class="num">03</div><h3>Generate &amp; schedule</h3><p>Add your API keys, log in your TikTok accounts, and start generating + scheduling content.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!--
+      TESTIMONIALS — the founder's note sits on top; the customer reviews below it run as a 3D
+      carousel that drifts on its own (hover to pause, drag/swipe or use the arrows to steer it).
+
+      To add a review, copy one .rv-card block and fill in:
+        1. PROFILE  — img src (put the photo in assets/reviews/), the name, and the handle/role
+        2. REVIEW   — the quote: what the app actually changed for them, in their own words
+      Delete any unused placeholder blocks — the carousel counts the cards itself, so 1, 3 or 12
+      all work. If a reviewer has no photo, drop the <img> and .t-avatar shows their initial.
+    -->
+    <section id="reviews">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Why I built this — and what affiliates say</h2>
+          <p>Real TikTok Shop affiliates running their accounts on Stitchify Pro every day.</p>
+        </div>
+
+        <!-- Founder's note — a note from the maker, not a review, so it stays put above the carousel. -->
+        <div class="card testimonial founder">
+          <div class="t-profile">
+            <!-- me-avatar.jpg is a square 256px head-crop of me.png — a circular avatar crops to
+                 the middle of a full-body shot, which cuts the head off. -->
+            <div class="t-avatar"><img src="assets/reviews/me-avatar.jpg" alt="Mark" onerror="this.remove()" />M</div>
+            <div class="t-who">
+              <div class="t-name">Mark <span class="t-badge">Founder</span></div>
+              <div class="t-handle">TikTok Shop affiliate · builder of Stitchify Pro</div>
+            </div>
+          </div>
+          <div class="t-review">
+            <p class="t-welcome">Welcome — I built this for my own accounts first.</p>
+            <p>I'm a TikTok Shop affiliate, not a software company. I was running content across several accounts — motor parts, gadgets, home stuff — and losing entire evenings to the same loop: stitch the clips, write the caption, log into one account, upload, wait, log into the next. Making the content took minutes. Posting it took hours.</p>
+            <p>So I built Stitchify Pro for myself, to make that part disappear. Now the clips get made, queued, and posted to every account on a schedule I set once. I still decide what goes out — I just don't sit there doing it by hand any more.</p>
+            <p>Everything in here exists because I needed it on my own accounts first.</p>
+          </div>
+        </div>
+
+        <div class="rv" id="reviewCarousel" role="group" aria-roledescription="carousel" aria-label="What affiliates say">
+          <button class="rv-nav rv-prev" type="button" aria-label="Previous review">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+
+          <div class="rv-stage">
+
+            <article class="rv-card">
+              <div class="rv-inner card testimonial">
+                <!-- 1. PROFILE -->
+                <div class="t-profile">
+                  <div class="t-avatar"><img src="assets/reviews/placeholder-1.jpg" alt="" onerror="this.remove()" />R</div>
+                  <div class="t-who">
+                    <div class="t-name">Reviewer name</div>
+                    <div class="t-handle">@handle · TikTok Shop affiliate</div>
+                  </div>
+                </div>
+                <!-- 2. REVIEW -->
+                <div class="t-review">
+                  <p>Their review goes here — replace this with what they actually sent you: what they were losing time on before, and what Stitchify Pro changed for them.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="rv-card">
+              <div class="rv-inner card testimonial">
+                <!-- 1. PROFILE -->
+                <div class="t-profile">
+                  <div class="t-avatar"><img src="assets/reviews/placeholder-2.jpg" alt="" onerror="this.remove()" />R</div>
+                  <div class="t-who">
+                    <div class="t-name">Reviewer name</div>
+                    <div class="t-handle">@handle · TikTok Shop affiliate</div>
+                  </div>
+                </div>
+                <!-- 2. REVIEW -->
+                <div class="t-review">
+                  <p>Their review goes here — replace this with what they actually sent you: what they were losing time on before, and what Stitchify Pro changed for them.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="rv-card">
+              <div class="rv-inner card testimonial">
+                <!-- 1. PROFILE -->
+                <div class="t-profile">
+                  <div class="t-avatar"><img src="assets/reviews/placeholder-3.jpg" alt="" onerror="this.remove()" />R</div>
+                  <div class="t-who">
+                    <div class="t-name">Reviewer name</div>
+                    <div class="t-handle">@handle · TikTok Shop affiliate</div>
+                  </div>
+                </div>
+                <!-- 2. REVIEW -->
+                <div class="t-review">
+                  <p>Their review goes here — replace this with what they actually sent you: what they were losing time on before, and what Stitchify Pro changed for them.</p>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+          <button class="rv-nav rv-next" type="button" aria-label="Next review">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+
+          <div class="rv-dots"></div>
         </div>
       </div>
     </section>
@@ -338,7 +443,7 @@
       </div>
       <p class="disclaimer"><strong>Use at your own risk.</strong> Stitchify Pro automates TikTok via browser automation. TikTok's Terms of Service may prohibit automated posting; accounts <strong>may be flagged, restricted, or banned</strong>. Rewards figures are TikTok's own <em>estimates</em>, not withdrawable amounts. Intended for personal content management, <strong>not spam</strong>. The authors <strong>assume no responsibility</strong> for actions taken by TikTok or any third party. Full details on the <a href="#about">About &amp; Risks</a> page.</p>
       <div class="smartscreen"><strong>First-time install:</strong> Windows SmartScreen may warn about an unsigned installer — click <strong>More info → Run anyway</strong>.</div>
-      <p style="margin-top:20px;">© <span id="year">2026</span> Stitchify Pro · <span class="mono" data-version>v3.1.0</span></p>
+      <p style="margin-top:20px;">© <span id="year">2026</span> Stitchify Pro · <span class="mono" data-version>v5.0.9</span></p>
     </div>
   </footer>
 

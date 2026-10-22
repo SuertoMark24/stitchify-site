@@ -155,6 +155,137 @@ section { padding: 60px 0; }
 .step h3 { margin: 8px 0 6px; }
 .step p { margin: 0; color: var(--muted); font-size: 0.94rem; }
 
+/* ---- Testimonials ---- */
+/* Each card is split into two blocks: .t-profile (photo + name) and .t-review (the quote),
+   separated by a rule so the person and what they said read as distinct. */
+
+.t-profile { display: flex; align-items: center; gap: 14px; padding-bottom: 16px; }
+.t-avatar {
+  position: relative; flex: 0 0 52px; width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: linear-gradient(135deg, var(--primary-2), var(--primary));
+  color: #1a1005; font-weight: 700; font-size: 1.15rem;  /* initial, shown if the photo is missing */
+  border: 1px solid var(--border);
+}
+/* object-position leans toward the top: portrait photos put the face in the upper third, and a
+   dead-centre crop would cut the head off. */
+.t-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+.t-who { min-width: 0; }
+.t-name { font-weight: 600; }
+.t-handle { color: var(--faint); font-size: 0.85rem; font-family: 'Fira Code', monospace; }
+
+.t-review { border-top: 1px solid var(--border); padding-top: 16px; }
+.t-review p { margin: 0; color: var(--muted); font-size: 0.94rem; line-height: 1.6; }
+.t-review p::before { content: '\201C'; color: var(--primary); font-size: 1.4rem; line-height: 0; margin-right: 4px; }
+.t-review p::after { content: '\201D'; color: var(--primary); font-size: 1.4rem; line-height: 0; margin-left: 2px; }
+
+/* Founder's note — a note from the maker, not a review, so it sits full width above the
+   carousel with a warm accent border instead of riding along in it. */
+.founder { border-color: rgba(255, 122, 24, 0.35); margin-bottom: 46px; }
+.founder .t-avatar { flex-basis: 64px; width: 64px; height: 64px; font-size: 1.4rem; }
+.founder .t-review p + p { margin-top: 12px; }
+.founder .t-review p::before, .founder .t-review p::after { content: none; }  /* a note, not a quote */
+.t-welcome { color: var(--text) !important; font-weight: 600; }
+.t-badge {
+  display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px;
+  background: rgba(255, 122, 24, 0.15); border: 1px solid rgba(255, 122, 24, 0.4);
+  color: var(--primary-2); font-size: 0.7rem; font-weight: 600; vertical-align: middle;
+  font-family: 'Fira Code', monospace;
+}
+
+/* ---- Review carousel (3D coverflow) ----
+   .rv-stage owns the perspective; JS absolutely positions each .rv-card into a "slot"
+   (0 = front, ±1, ±2 = receding on either side) and animates between them. .rv-inner is
+   the visible card: it keeps its own 3D context so the avatar can float above the surface,
+   and carries the pointer-tilt so the card leans toward the cursor.
+   NOTE: backdrop-filter and opacity<1 both flatten 3D children, so .rv-inner drops the
+   glass blur and side cards are dimmed with a ::after veil rather than with opacity. */
+/* The receding cards reach past the .wrap on wide screens — let them spill, but clip at the
+   section so they can never push a horizontal scrollbar onto the page. */
+#reviews { overflow: hidden; }
+.rv { position: relative; padding: 0 54px; user-select: none; -webkit-user-select: none; }
+.rv-stage {
+  position: relative; min-height: 220px;
+  perspective: 1150px; perspective-origin: 50% 45%;
+  touch-action: pan-y; cursor: grab;
+}
+.rv.is-dragging .rv-stage { cursor: grabbing; }
+
+.rv-card {
+  position: absolute; top: 0; left: 50%;
+  width: min(400px, 100%);
+  transform: translateX(-50%);
+  transform-style: preserve-3d; backface-visibility: hidden;
+  will-change: transform;
+  transition: transform .8s cubic-bezier(.22, .85, .26, 1), opacity .5s ease, visibility .5s;
+}
+.rv-card.is-far { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.rv-inner {
+  position: relative; height: 100%;
+  transform-style: preserve-3d;
+  backdrop-filter: none; -webkit-backdrop-filter: none;   /* would flatten the 3D children */
+  background: linear-gradient(165deg, var(--card-2), var(--card));
+  transition: transform .25s ease-out, border-color .5s ease, box-shadow .5s ease;
+  box-shadow: 0 24px 50px -28px rgba(0, 0, 0, .9);
+}
+/* Dimming veil for the cards behind — --veil is set per slot by the JS. */
+.rv-inner::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: rgba(10, 7, 5, var(--veil, 0)); transition: background .55s ease;
+}
+.rv-card:hover .rv-inner { transform: none; }   /* the generic .card:hover lift would fight the tilt */
+.rv-card.is-active .rv-inner {
+  border-color: rgba(255, 122, 24, .38);
+  /* A deep drop shadow is what actually separates the front card from the ones it overlaps. */
+  box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 1), 0 0 46px -18px rgba(255, 122, 24, .45);
+}
+
+/* The bits that lift off the card face — this is the 3D "pop". */
+.rv-inner .t-profile, .rv-inner .t-review { transform-style: preserve-3d; }
+.rv-inner .t-avatar {
+  transform: translateZ(26px);
+  box-shadow: 0 18px 26px -14px rgba(0, 0, 0, .95);
+  transition: transform .6s cubic-bezier(.22, .85, .26, 1);
+}
+.rv-card.is-active .rv-inner .t-avatar { transform: translateZ(58px) scale(1.06); }
+.rv-inner .t-who { transform: translateZ(22px); }
+.rv-inner .t-review { transform: translateZ(12px); }
+
+.rv-nav {
+  position: absolute; top: 50%; z-index: 5; transform: translateY(-50%);
+  width: 42px; height: 42px; padding: 0; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center;
+  background: rgba(24, 17, 12, .8); border: 1px solid var(--border); color: var(--text);
+  transition: background .2s, border-color .2s, color .2s;
+}
+.rv-prev { left: 0; }
+.rv-next { right: 0; }
+.rv-nav:hover { background: var(--primary); border-color: var(--primary); color: #1a1005; }
+.rv-nav:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+.rv-dots { display: flex; justify-content: center; gap: 8px; margin-top: 26px; }
+.rv-dot {
+  width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; cursor: pointer;
+  background: rgba(255, 255, 255, .2); transition: width .35s ease, background .35s ease;
+}
+.rv-dot.is-on { width: 26px; background: var(--primary); }
+
+/* One review only: nothing to move between. */
+.rv.is-single .rv-nav, .rv.is-single .rv-dots { display: none; }
+.rv.is-single { padding: 0; }
+
+@media (max-width: 900px) {
+  .rv { padding: 0 10px; }
+  .rv-nav { width: 36px; height: 36px; }
+  .rv-prev { left: -6px; }
+  .rv-next { right: -6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-card, .rv-inner, .rv-inner .t-avatar, .rv-inner::after { transition: none; }
+}
+
 /* ---- Pricing ---- */
 .pricing { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 40px; }
 .price-card { max-width: 380px; width: 100%; text-align: center; }
