@@ -57,6 +57,19 @@
     .btn.busy { opacity: 0.6; cursor: wait; }
     .err { color: var(--bad); font-size: 0.9rem; min-height: 1.3em; }
 
+    /* ---- Top bar ---- */
+    .topbar { max-width: 1080px; margin: 0 auto; padding: 16px 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .topbar a { color: var(--text); text-decoration: none; }
+    .topbar-brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; color: var(--primary) !important; }
+    .topbar-back {
+      display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 10px;
+      border: 1px solid var(--border); background: rgba(255, 255, 255, .04); font-size: 0.92rem; font-weight: 500;
+      transition: border-color .15s, background .15s;
+    }
+    .topbar-back:hover { border-color: rgba(255, 154, 60, .55); background: rgba(255, 255, 255, .07); }
+    .topbar a:focus-visible { outline: 2px solid var(--primary-2); outline-offset: 2px; border-radius: 10px; }
+    @media (max-width: 420px) { .topbar-brand span { display: none; } }
+
     /* ---- Lock ---- */
     .lock { min-height: 70vh; display: grid; place-items: center; }
     .lock-card { width: 100%; max-width: 420px; padding: 28px; display: grid; gap: 16px; }
@@ -157,6 +170,15 @@
   </style>
 </head>
 <body>
+  <!-- Way back to the public site. Root-relative links work from both /internal/pricing and
+       /internal/pricing.html. -->
+  <nav class="topbar" aria-label="Site">
+    <a class="topbar-brand" href="/"><img src="/assets/logo.svg" alt="" width="28" height="28" /><span>Stitchify Pro</span></a>
+    <a class="topbar-back" href="/">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to the main site
+    </a>
+  </nav>
   <main class="wrap">
     <div class="desk" id="desk" hidden></div>
   </main>
