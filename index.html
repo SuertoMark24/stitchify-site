@@ -193,14 +193,14 @@
           <div class="feat feat-sm">
             <svg class="i feat-ic"><use href="#i-clapper"/></svg>
             <div>
-              <h4>Scene Maker</h4>
+              <h4><a class="feat-link" href="#scene-maker">Scene Maker</a></h4>
               <p>Prompt → image → Google Flow video, scene by scene. Build short dramas with a cast, captions and a final stitch.</p>
             </div>
           </div>
           <div class="feat feat-sm">
             <svg class="i feat-ic"><use href="#i-pin"/></svg>
             <div>
-              <h4>Pin Maker</h4>
+              <h4><a class="feat-link" href="#pin-maker">Pin Maker</a></h4>
               <p>Pinterest pins from an Amazon link or a screenshot: AI-enhanced image, SEO title and description, then post or schedule to your board.</p>
             </div>
           </div>
@@ -238,6 +238,141 @@
           <video src="assets/demo/stich_demo-1080.mp4" poster="assets/demo/stich_demo-poster.jpg"
                  autoplay loop muted playsinline preload="auto" controls
                  aria-label="Stitchify Pro — product photo to finished video"></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCENE MAKER (add-on) =================
+         Promo links can land here directly: /#scene-maker. The studio below is an illustration
+         driven by js/main.js (sceneStudio); its images are stills from real Google Flow clips in
+         assets/demo/addons/. Swap in real Scene Maker screenshots there when you have them. -->
+    <section id="scene-maker" class="addon">
+      <div class="wrap">
+        <div class="addon-head">
+          <h2>Scene Maker turns written scenes into one finished video.</h2>
+          <div class="addon-intro">
+            <p>Write each scene as an image prompt and a video prompt. Scene Maker makes the image with Gemini, Flow or ChatGPT, Google Flow animates it into a short clip, and Stitch joins the scenes you pick into one video.</p>
+            <ul class="tick-list">
+              <li><svg class="i"><use href="#i-check"/></svg>One project per campaign keeps every scene in the same style</li>
+              <li><svg class="i"><use href="#i-check"/></svg>Short dramas with a cast, captions and a final stitch</li>
+              <li><svg class="i"><use href="#i-check"/></svg>Paste a whole set of scenes at once, or let your AI agent import them</li>
+            </ul>
+          </div>
+        </div>
+
+        <figure class="studio" id="sceneStudio">
+          <div class="studio-panel" role="img" aria-label="Illustration of Scene Maker: three scenes are written as prompts, turned into images, animated into clips, then stitched into one video.">
+            <ol class="ss-list" aria-hidden="true">
+              <li class="ss-scene" data-state="done">
+                <div class="ss-thumb"><img src="assets/demo/addons/scene-1.jpg" alt="" width="300" height="534" loading="lazy" /></div>
+                <div class="ss-body">
+                  <div class="ss-top"><b>Scene 1</b><span class="ss-pill"></span></div>
+                  <p class="ss-prompt" data-prompt="Woman in a warm living room holds up the CIVAGO tumbler and its box, smiling at camera.">Woman in a warm living room holds up the CIVAGO tumbler and its box, smiling at camera.</p>
+                </div>
+              </li>
+              <li class="ss-scene" data-state="done">
+                <div class="ss-thumb"><img src="assets/demo/addons/scene-2.jpg" alt="" width="300" height="534" loading="lazy" /></div>
+                <div class="ss-body">
+                  <div class="ss-top"><b>Scene 2</b><span class="ss-pill"></span></div>
+                  <p class="ss-prompt" data-prompt="She sips through the straw, lamp light behind her, candid and relaxed.">She sips through the straw, lamp light behind her, candid and relaxed.</p>
+                </div>
+              </li>
+              <li class="ss-scene" data-state="done">
+                <div class="ss-thumb"><img src="assets/demo/addons/scene-3.jpg" alt="" width="300" height="534" loading="lazy" /></div>
+                <div class="ss-body">
+                  <div class="ss-top"><b>Scene 3</b><span class="ss-pill"></span></div>
+                  <p class="ss-prompt" data-prompt="Close-up of the puppy print, slow push-in, soft daylight.">Close-up of the puppy print, slow push-in, soft daylight.</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="ss-preview" aria-hidden="true">
+              <div class="ss-screen">
+                <img src="assets/demo/addons/scene-1.jpg" alt="" width="300" height="534" loading="lazy" />
+                <img src="assets/demo/addons/scene-2.jpg" alt="" width="300" height="534" loading="lazy" />
+                <img src="assets/demo/addons/scene-3.jpg" alt="" width="300" height="534" loading="lazy" />
+                <span class="ss-badge">Stitched video</span>
+                <div class="ss-bar"><i></i><i></i><i></i></div>
+              </div>
+            </div>
+
+            <div class="ss-stitch" aria-hidden="true">
+              <span class="ss-stitch-label">Stitch</span>
+              <div class="ss-track">
+                <span class="ss-slot"><img src="assets/demo/addons/scene-1.jpg" alt="" loading="lazy" /></span>
+                <span class="ss-join"></span>
+                <span class="ss-slot"><img src="assets/demo/addons/scene-2.jpg" alt="" loading="lazy" /></span>
+                <span class="ss-join"></span>
+                <span class="ss-slot"><img src="assets/demo/addons/scene-3.jpg" alt="" loading="lazy" /></span>
+              </div>
+              <span class="ss-out">One video</span>
+            </div>
+          </div>
+          <figcaption>Illustration built from real Google Flow clips made for a product ad.</figcaption>
+        </figure>
+
+        <div class="addon-cta">
+          <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Ask about Scene Maker</a>
+          <p>Works on any plan, or on its own with the <a href="#pricing">Creator plan</a>. No TikTok account needed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PIN MAKER (add-on) =================
+         Promo links can land here directly: /#pin-maker. The builder is an illustration driven
+         by js/main.js (pinBuilder). The plain photo and the enhanced pin are stills from the
+         demo video in assets/demo/addons/. -->
+    <section id="pin-maker" class="addon">
+      <div class="wrap pin-layout">
+        <figure class="pin-figure" id="pinBuilder">
+          <div class="pin-panel" role="img" aria-label="Illustration of Pin Maker: a product link is pasted, the title and description are written, the image is enhanced into a pin, and the pin is scheduled to a board.">
+            <div class="pb-link" aria-hidden="true">
+              <span class="pb-input mono"><span class="pb-typed" data-text="amazon.com/dp/B0CIVAGO26">amazon.com/dp/B0CIVAGO26</span></span>
+              <span class="pb-btn">Get product</span>
+            </div>
+            <div class="pb-body" aria-hidden="true">
+              <div class="pb-pin">
+                <img class="pb-raw" src="assets/demo/addons/scene-3.jpg" alt="" width="300" height="534" loading="lazy" />
+                <img class="pb-enhanced" src="assets/demo/addons/pin-enhanced.jpg" alt="" width="276" height="414" loading="lazy" />
+                <span class="pb-sweep"></span>
+              </div>
+              <div class="pb-fields">
+                <div class="pb-field">
+                  <span class="pb-label">Title <em class="mono" data-count-for="title">58/100</em></span>
+                  <span class="pb-value pb-title" data-text="CIVAGO 26oz Ceramic-Lined Tumbler with Straw, Puppy Print">CIVAGO 26oz Ceramic-Lined Tumbler with Straw, Puppy Print</span>
+                </div>
+                <div class="pb-field">
+                  <span class="pb-label">Description <em class="mono" data-count-for="desc">143/500</em></span>
+                  <span class="pb-value pb-desc" data-text="A 26oz stainless steel tumbler with a ceramic liner, a straw lid and a cute puppy print. Made for desk coffee and road trips.">A 26oz stainless steel tumbler with a ceramic liner, a straw lid and a cute puppy print. Made for desk coffee and road trips.</span>
+                </div>
+                <div class="pb-row">
+                  <div class="pb-field"><span class="pb-label">Board</span><span class="pb-value">Kitchen finds</span></div>
+                  <div class="pb-field"><span class="pb-label">Post</span><span class="pb-value">Tomorrow 8 PM</span></div>
+                </div>
+                <div class="pb-actions">
+                  <span class="pb-btn pb-enhance">Enhance</span>
+                  <span class="pb-btn pb-primary">Schedule</span>
+                  <span class="pb-status">Scheduled on Pinterest</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>Illustration. The pin image is a real AI-made product poster.</figcaption>
+        </figure>
+
+        <div class="pin-copy">
+          <h2>Pin Maker turns a product link into a Pinterest pin.</h2>
+          <p class="pin-lead">Paste an Amazon link or a screenshot. Pin Maker gets the product, makes the pin image with AI, writes the title and description for Pinterest search, and posts it to your board.</p>
+          <ol class="pin-steps">
+            <li><b>Paste a link or a screenshot.</b> The product details come in on their own.</li>
+            <li><b>Enhance the image.</b> AI remakes the photo as a pin, from a prompt you can change.</li>
+            <li><b>Get the words written.</b> An SEO title up to 100 characters and a description up to 500.</li>
+            <li><b>Post or schedule.</b> Publish now, or use Pinterest's own scheduler from 15 minutes to 30 days ahead.</li>
+          </ol>
+          <div class="addon-cta addon-cta-left">
+            <a class="btn btn-primary btn-lg" href="https://discord.gg/hhvxmvm9N" target="_blank" rel="noopener"><svg class="i"><use href="#i-discord"/></svg>Ask about Pin Maker</a>
+            <p>Works on any plan, or on its own with the <a href="#pricing">Creator plan</a>. No TikTok account needed.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -589,6 +724,8 @@
         <a class="brand brand-sm" href="#home"><img src="assets/logo.svg" alt="" /> <span>Stitchify Pro</span></a>
         <nav class="foot-links" aria-label="Footer">
           <a href="#features">Features</a>
+          <a href="#scene-maker">Scene Maker</a>
+          <a href="#pin-maker">Pin Maker</a>
           <a href="#pricing">Pricing</a>
           <a href="#about">About &amp; Risks</a>
           <a data-contact>Contact</a>

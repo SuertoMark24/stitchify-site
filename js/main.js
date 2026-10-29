@@ -500,6 +500,185 @@ if (yr) yr.textContent = new Date().getFullYear();
   restart();
 })();
 
+/* ============================================================================
+   ADD-ON MOCKUPS — Scene Maker studio and Pin Maker builder.
+   Both start in their finished state in the markup (that's what visitors without JS,
+   or with reduced motion, see). playWhenVisible() runs a cycle over and over while
+   the mockup is on screen in a visible tab; its wait() only counts time while
+   playing, so scrolling away freezes a cycle mid-step and it resumes where it was.
+   ============================================================================ */
+function playWhenVisible(root, cycle) {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reduce.matches || !("IntersectionObserver" in window)) return;
+  let onScreen = false;
+  let running = false;
+  const active = () => onScreen && !document.hidden;
+
+  function wait(ms) {
+    return new Promise((resolve) => {
+      let left = ms;
+      let last = performance.now();
+      (function step() {
+        const now = performance.now();
+        if (active()) left -= now - last;
+        last = now;
+        if (left <= 0) resolve();
+        else setTimeout(step, Math.min(100, left));
+      })();
+    });
+  }
+
+  async function loop() {
+    if (running) return;
+    running = true;
+    while (active()) await cycle(wait);
+    running = false;
+  }
+
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; if (active()) loop(); }, { threshold: 0.15 }).observe(root);
+  document.addEventListener("visibilitychange", () => { if (active()) loop(); });
+}
+
+async function typeInto(el, text, wait, perSecond, onTick) {
+  el.classList.add("typing");
+  for (let i = 1; i <= text.length; i++) {
+    el.textContent = text.slice(0, i);
+    onTick?.(i);
+    await wait(1000 / perSecond);
+  }
+  el.classList.remove("typing");
+}
+
+const restartAnimation = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+
+/* ---- Scene Maker: prompt → image → clip for each scene, then stitch and play ---- */
+(function sceneStudio() {
+  const root = document.getElementById("sceneStudio");
+  if (!root) return;
+  const scenes = Array.from(root.querySelectorAll(".ss-scene"));
+  const screen = root.querySelector(".ss-screen");
+  const shots = Array.from(screen.querySelectorAll("img"));
+  const bars = Array.from(screen.querySelectorAll(".ss-bar i"));
+  const badge = screen.querySelector(".ss-badge");
+  const stitch = root.querySelector(".ss-stitch");
+  const slots = Array.from(root.querySelectorAll(".ss-slot"));
+  const LABELS = { waiting: "Waiting", prompt: "Writing prompt", image: "Image", video: "Animating", done: "Ready" };
+
+  const setState = (s, state) => {
+    s.dataset.state = state;
+    s.querySelector(".ss-pill").dataset.label = LABELS[state];
+  };
+  scenes.forEach((s) => setState(s, s.dataset.state));
+
+  function show(i, playing) {
+    shots.forEach((img, k) => { img.classList.toggle("is-on", k === i); img.classList.remove("is-playing"); });
+    if (playing && shots[i]) restartAnimation(shots[i], "is-playing");
+  }
+
+  function reset() {
+    scenes.forEach((s) => {
+      setState(s, "waiting");
+      s.classList.remove("is-active");
+      s.querySelector(".ss-prompt").textContent = "";
+    });
+    screen.classList.add("is-live");
+    stitch.classList.add("is-live");
+    stitch.classList.remove("is-stitched");
+    slots.forEach((el) => el.classList.remove("is-filled"));
+    bars.forEach((b) => b.classList.remove("is-full", "is-run"));
+    show(-1);
+  }
+
+  playWhenVisible(root, async (wait) => {
+    reset();
+    await wait(500);
+    for (let i = 0; i < scenes.length; i++) {
+      const s = scenes[i];
+      scenes.forEach((x) => x.classList.toggle("is-active", x === s));
+      setState(s, "prompt");
+      badge.textContent = `Scene ${i + 1}: writing prompt`;
+      show(-1);
+      const p = s.querySelector(".ss-prompt");
+      await typeInto(p, p.dataset.prompt, wait, 60);
+      setState(s, "image");
+      badge.textContent = `Scene ${i + 1}: image`;
+      show(i, false);
+      await wait(900);
+      setState(s, "video");
+      badge.textContent = `Scene ${i + 1}: Google Flow clip`;
+      show(i, true);
+      await wait(1900);
+      setState(s, "done");
+      slots[i].classList.add("is-filled");
+      await wait(350);
+    }
+    scenes.forEach((x) => x.classList.remove("is-active"));
+    stitch.classList.add("is-stitched");
+    await wait(800);
+    // Play the stitched result: each scene in turn, with its segment of the bar filling.
+    badge.textContent = "Stitched video";
+    for (let i = 0; i < shots.length; i++) {
+      show(i, true);
+      bars[i].style.setProperty("--d", "1.7s");
+      restartAnimation(bars[i], "is-run");
+      await wait(1700);
+      bars[i].classList.replace("is-run", "is-full");
+    }
+    await wait(2200);
+  });
+})();
+
+/* ---- Pin Maker: link → product → title + description → enhance → schedule ---- */
+(function pinBuilder() {
+  const root = document.getElementById("pinBuilder");
+  if (!root) return;
+  const panel = root.querySelector(".pin-panel");
+  const link = root.querySelector(".pb-typed");
+  const title = root.querySelector(".pb-title");
+  const desc = root.querySelector(".pb-desc");
+  const titleCount = root.querySelector('[data-count-for="title"]');
+  const descCount = root.querySelector('[data-count-for="desc"]');
+  const [getBtn, enhanceBtn, scheduleBtn] = [".pb-link .pb-btn", ".pb-enhance", ".pb-primary"].map((q) => root.querySelector(q));
+  const count = (el, n, max) => { el.textContent = `${n}/${max}`; };
+  count(titleCount, title.dataset.text.length, 100);
+  count(descCount, desc.dataset.text.length, 500);
+
+  const press = (btn) => { btn.classList.add("is-press"); setTimeout(() => btn.classList.remove("is-press"), 220); };
+  const OFF = ["pb-off-product", "pb-off-enhanced", "pb-off-meta", "pb-off-status"];
+
+  playWhenVisible(root, async (wait) => {
+    panel.classList.add(...OFF);
+    link.textContent = "";
+    title.textContent = "";
+    desc.textContent = "";
+    count(titleCount, 0, 100);
+    count(descCount, 0, 500);
+    await wait(600);
+    await typeInto(link, link.dataset.text, wait, 32);
+    await wait(250);
+    press(getBtn);
+    await wait(250);
+    panel.classList.remove("pb-off-product");
+    await wait(700);
+    await typeInto(title, title.dataset.text, wait, 48, (n) => count(titleCount, n, 100));
+    await wait(200);
+    await typeInto(desc, desc.dataset.text, wait, 85, (n) => count(descCount, n, 500));
+    await wait(450);
+    press(enhanceBtn);
+    restartAnimation(panel, "is-enhancing");
+    await wait(450);
+    panel.classList.remove("pb-off-enhanced");
+    await wait(1000);
+    panel.classList.remove("is-enhancing");
+    panel.classList.remove("pb-off-meta");
+    await wait(900);
+    press(scheduleBtn);
+    await wait(200);
+    panel.classList.remove("pb-off-status");
+    await wait(3800);
+  });
+})();
+
 /* ---- Maximize a demo video to fullscreen ---- */
 function maximizeVideo(btn) {
   const v = btn.parentElement.querySelector("video");
