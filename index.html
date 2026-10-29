@@ -31,6 +31,10 @@
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-clapper" viewBox="0 0 24 24"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z"/><path d="m3 10 1.2-5.5 16 3.5L21 10M8 5.6l2.2 3.9M13.5 6.8l2.2 3.9"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22v-6M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2.5"/><path d="M12 4v4M9 13v1M15 13v1M9.5 17h5M2 13v2M22 13v2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
     <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
   </svg>
 
@@ -64,7 +68,7 @@
             <a class="btn btn-ghost btn-lg" href="#features">See what it does</a>
           </div>
           <ul class="hero-meta">
-            <li class="mono" data-version>v5.0.9</li>
+            <li class="mono" data-version>v6.0.5</li>
             <li>Windows 10/11</li>
             <li>One-click installer</li>
           </ul>
@@ -180,6 +184,38 @@
             <div>
               <h4>200+ AI video models</h4>
               <p>Higgsfield + MuAPI: Kling, Veo, Sora, Wan, Seedance and more — image-to-video through a single app, your keys.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="feat-making">
+          <h3 class="feat-group">Add-ons that work on any plan — even without TikTok</h3>
+          <div class="feat feat-sm">
+            <svg class="i feat-ic"><use href="#i-clapper"/></svg>
+            <div>
+              <h4>Scene Maker</h4>
+              <p>Prompt → image → Google Flow video, scene by scene. Build short dramas with a cast, captions and a final stitch.</p>
+            </div>
+          </div>
+          <div class="feat feat-sm">
+            <svg class="i feat-ic"><use href="#i-pin"/></svg>
+            <div>
+              <h4>Pin Maker</h4>
+              <p>Pinterest pins from an Amazon link or a screenshot: AI-enhanced image, SEO title and description, then post or schedule to your board.</p>
+            </div>
+          </div>
+          <div class="feat feat-sm">
+            <svg class="i feat-ic"><use href="#i-bot"/></svg>
+            <div>
+              <h4>Agent tools (MCP)</h4>
+              <p>Let your AI agent drive the app: create and post pins, retry the TikTok queue, fix captions — all from a chat.</p>
+            </div>
+          </div>
+          <div class="feat feat-sm">
+            <svg class="i feat-ic"><use href="#i-download"/></svg>
+            <div>
+              <h4>Downloader</h4>
+              <p>TikTok, Facebook and YouTube videos without watermark — play them in the app and add word-by-word captions with one click.</p>
             </div>
           </div>
         </div>
@@ -335,7 +371,7 @@
 
     <section id="pricing">
       <div class="wrap">
-        <div class="section-head section-head-center"><h2>Choose your edition</h2><p>Billed monthly or yearly (yearly = 2 months free), activated online and locked to your machine. Bring your own AI accounts. Ask us on Discord for your quote.</p></div>
+        <div class="section-head section-head-center"><h2>Choose your edition</h2><p>Billed monthly or yearly (yearly = 2 months free), activated online and locked to your machine, plus a one-time installation fee on your first payment. Bring your own AI accounts. Ask us on Discord for your quote.</p></div>
         <div class="pricing">
           <div class="card price-card">
             <h3 class="tier">Basic</h3>
@@ -375,6 +411,8 @@
           </div>
         </div>
 
+        <p class="price-note" style="text-align:center; margin-top:20px;"><strong>No TikTok?</strong> Get <strong>Scene Maker</strong> or <strong>Pin Maker</strong> on their own with the <strong>Creator</strong> plan — no TikTok accounts needed.</p>
+
         <div class="compare-wrap">
           <table class="compare-table">
             <caption class="sr-only">What each edition includes</caption>
@@ -399,6 +437,9 @@
               <tr><th class="compare-feature" scope="row">Affiliates / Batch Stitch — bulk affiliate folder automation</th><td class="no"></td><td class="no"></td><td class="yes"></td></tr>
               <tr><th class="compare-feature" scope="row">AI Automation — product images &amp; videos via Gemini, Google Flow or ChatGPT</th><td class="no"></td><td class="no"></td><td class="addon">Add-on</td></tr>
               <tr><th class="compare-feature" scope="row">One-click — everything for a product in one go (with AI Automation)</th><td class="no"></td><td class="no"></td><td class="addon">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">Scene Maker — prompt → image → Flow video scenes</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">Pin Maker — Pinterest pins, post &amp; schedule</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
+              <tr><th class="compare-feature" scope="row">Agent tools (MCP) — let your AI agent run the app</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
               <tr><th class="compare-feature" scope="row">Downloader — TikTok, Facebook &amp; YouTube without watermark</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
               <tr><th class="compare-feature" scope="row">Extra TikTok accounts &amp; extra PCs</th><td class="addon">Add-on</td><td class="addon">Add-on</td><td class="addon">Add-on</td></tr>
             </tbody>
@@ -424,7 +465,7 @@
           <div class="docs-num">1</div>
           <div>
             <h3>Join Discord &amp; get your license key</h3>
-            <p>Tell us which edition you want (Basic, Standard, or Premium) and how you'll pay — we'll send you a license key.</p>
+            <p>Tell us which edition you want (Basic, Standard, Premium, or Creator for Scene Maker / Pin Maker only) and how you'll pay — we'll send you a license key.</p>
           </div>
         </div>
         <div class="card docs-step">
@@ -555,7 +596,7 @@
       </div>
       <p class="disclaimer"><strong>Use at your own risk.</strong> Stitchify Pro automates TikTok via browser automation. TikTok's Terms of Service may prohibit automated posting; accounts <strong>may be flagged, restricted, or banned</strong>. Rewards figures are TikTok's own <em>estimates</em>, not withdrawable amounts. Intended for personal content management, <strong>not spam</strong>. The authors <strong>assume no responsibility</strong> for actions taken by TikTok or any third party. Full details on the <a href="#about">About &amp; Risks</a> page.</p>
       <div class="smartscreen"><strong>First-time install:</strong> Windows SmartScreen may warn about an unsigned installer — click <strong>More info → Run anyway</strong>.</div>
-      <p class="copyright">© <span id="year">2026</span> Stitchify Pro, <span class="mono" data-version>v5.0.9</span></p>
+      <p class="copyright">© <span id="year">2026</span> Stitchify Pro, <span class="mono" data-version>v6.0.5</span></p>
     </div>
   </footer>
 

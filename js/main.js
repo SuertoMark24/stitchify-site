@@ -8,14 +8,40 @@ const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
-  version: "5.0.9",
+  version: "6.0.5",
 };
 
 const RELEASES = [
   {
+    version: "6.0.5",
+    date: "Oct 27, 2026",
+    latest: true,
+    notes: [
+      "Pin Maker: your own image / title / description prompt per pin",
+      "New agent (MCP) tool to write a product-specific image prompt for a pin",
+    ],
+  },
+  {
+    version: "6.0.4",
+    date: "Oct 27, 2026",
+    notes: [
+      "New Creator plan: Scene Maker and/or Pin Maker without any TikTok accounts — the app opens straight on your add-on",
+    ],
+  },
+  {
+    version: "6.0.3",
+    date: "Oct 27, 2026",
+    notes: [
+      "New Pin Maker add-on: Pinterest pins from an Amazon link or a screenshot — AI enhance, SEO title and description, post or schedule to your board",
+      "Scene Maker and Pin Maker now work on any plan, no AI Automation needed",
+      "Scene Maker: drama scripts with shots and emotions, master caption, captions on Stitch",
+      "Product Import: check rate, remove completed, Flow video length (4s to 10s)",
+      "Agent (MCP) tools for Pin Maker, TikTok queue retry and caption fixes",
+    ],
+  },
+  {
     version: "3.3.5",
     date: "Aug 4, 2026",
-    latest: true,
     notes: [
       "New UGC prompt sets: Bubble Handheld (playful bubble-caption cover + hand-reveal video) and Cinemagraph Shop-the-Look",
       "Fixed UGC review montage videos sometimes showing the reference storyboard grid itself instead of real footage",
