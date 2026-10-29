@@ -3,3 +3,6 @@ Thumbs.db
 node_modules/
 .netlify/
 *.log
+
+# Private promo briefs (used locally by the agent, never deployed)
+marketing/
