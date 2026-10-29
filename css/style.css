@@ -454,6 +454,8 @@ section { padding: 72px 0; scroll-margin-top: 72px; }
 .price-list li:first-child:has(strong:only-child) { padding-left: 0; }
 .price-note { font-size: 0.84rem; color: var(--faint); margin: 14px 0 0; text-align: center; }
 .price-note a { cursor: pointer; }
+.pricing-cta { margin-top: 24px; }
+.creator-note { margin-top: 20px; }
 
 .compare-wrap {
   margin-top: 40px; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius);

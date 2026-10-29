@@ -42,7 +42,7 @@ Lead with **hands-off posting**. Stitchify Pro queues content and posts it direc
   - Premium: 6 accounts. Adds Product Import from TikTok Shop and Affiliates / Batch Stitch.
 - **Add-ons:** AI Automation, One-click, Scene Maker, Downloader, extra accounts and PCs.
 - **Licensing:** a **monthly or yearly subscription** (yearly = 2 months free), activated online and locked to one PC. The "one-time license" wording on About & Risks is outdated and needs correcting.
-- **Pricing:** quote-based on the public site. Real prices (PHP) live only on the passphrase-encrypted `internal/pricing.html` (noindex). Public pages must not show prices.
+- **Pricing:** the home page shows plans without prices and links to `internal/pricing.html`, which shows the real prices (PHP) and builds a quote (noindex; the price data is encrypted in the page and unlocked by the page itself). Prices are edited in the private `stitchify-pricing-private` folder and re-encrypted, never written readable into this repo. Don't put prices in the home page or in ads; link to the pricing page or Discord.
 - **Installer:** unsigned, so Windows SmartScreen warns on first install.
 - Not affiliated with TikTok.
 
