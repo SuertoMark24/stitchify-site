@@ -107,8 +107,6 @@ const RELEASES = [
     version: "3.1.0",
     date: "Jul 8, 2026",
     notes: [
-      '"Hey Stitch" voice command — schedule a whole batch by voice',
-      "MuAPI provider — 200+ AI video models (Kling, Veo, Sora, Wan, Seedance…)",
       "App icon on the installer + shortcuts",
       "Friendlier local address (stitchify.localhost)",
     ],
