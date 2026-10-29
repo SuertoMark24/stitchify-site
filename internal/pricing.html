@@ -158,22 +158,6 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="lock" id="lock">
-      <div class="lock-card glass">
-        <img src="../assets/logo.svg" alt="" />
-        <div>
-          <div class="eyebrow">Private pricing</div>
-          <h1>Stitchify Pro Pricing</h1>
-          <p class="muted" style="margin:6px 0 0">Enter the passphrase you were given to view the plans.</p>
-        </div>
-        <form id="unlock-form" autocomplete="off">
-          <input class="text-in" id="pass" type="password" placeholder="Passphrase" aria-label="Passphrase" autocomplete="current-password" required />
-          <button class="btn" id="unlock-btn" type="submit">Unlock</button>
-          <div class="err" id="err" role="alert"></div>
-        </form>
-      </div>
-    </div>
-
     <div class="desk" id="desk" hidden></div>
   </main>
 
@@ -226,21 +210,15 @@
       return JSON.parse(new TextDecoder().decode(plain));
     }
 
-    $('#unlock-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = $('#unlock-btn');
-      btn.disabled = true; btn.classList.add('busy'); btn.textContent = 'Unlocking…'; $('#err').textContent = '';
+    // No passphrase card any more (owner, 2026-10-29): the page opens straight to the plans.
+    (async () => {
       try {
-        if (!PAYLOAD) throw new Error('empty');
-        render(await decrypt($('#pass').value));
-        $('#pass').value = '';
-        $('#lock').hidden = true; $('#desk').hidden = false;
+        render(await decrypt('autopost'));
       } catch {
-        $('#err').textContent = 'Wrong passphrase. Check it and try again.';
-      } finally {
-        btn.disabled = false; btn.classList.remove('busy'); btn.textContent = 'Unlock';
+        $('#desk').innerHTML = '<p class="muted">Pricing could not be loaded. Please refresh the page.</p>';
       }
-    });
+      $('#desk').hidden = false;
+    })();
 
     // ---------- State ----------
     let DATA = null;
@@ -302,7 +280,6 @@
             <div class="eyebrow">Plans &amp; add-ons</div>
             <h1>Stitchify Pro <span>pricing</span></h1>
           </div>
-          <button class="lockbtn" id="relock" type="button">Lock</button>
         </div>
         <p class="note glass">${esc(data.intro)}</p>
 
@@ -369,7 +346,6 @@
         update();
       }));
       $('#desk').querySelectorAll('[data-choose]').forEach((b) => b.addEventListener('click', () => { S.plan = b.dataset.choose; prune(); update(); }));
-      $('#relock').addEventListener('click', () => { $('#desk').innerHTML = ''; DATA = null; $('#desk').hidden = true; $('#lock').hidden = false; $('#pass').focus(); });
       $('#view-report').addEventListener('click', openReport);
       update();
     }
