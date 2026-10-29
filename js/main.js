@@ -8,14 +8,23 @@ const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
-  version: "6.0.5",
+  version: "6.0.6",
 };
 
 const RELEASES = [
   {
+    version: "6.0.6",
+    date: "Oct 29, 2026",
+    latest: true,
+    notes: [
+      "TikTok scheduling works with TikTok's new date and time pickers as well as the old ones, and checks the schedule before posting so a post never goes out at the wrong time",
+      "Gemini: pick Auto, Pro or Argon and a Thinking level (Low, Medium, High) in Product Import → Configuration",
+      "Downloader (Facebook): play the reel in the app and add word-by-word captions in one click",
+    ],
+  },
+  {
     version: "6.0.5",
     date: "Oct 27, 2026",
-    latest: true,
     notes: [
       "Pin Maker: your own image / title / description prompt per pin",
       "New agent (MCP) tool to write a product-specific image prompt for a pin",
