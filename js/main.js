@@ -8,14 +8,25 @@ const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
-  version: "6.0.6",
+  version: "6.0.7",
 };
 
 const RELEASES = [
   {
+    version: "6.0.7",
+    date: "Nov 3, 2026",
+    latest: true,
+    notes: [
+      "Product Import: Find products. Paste a TikTok Shop category link, set a minimum rating, and pick the products to import",
+      "Found products remind you on Discord, in each account's own channel, to add them to your Showcase after import",
+      "Pin Maker: alt text for every pin, written by AI from the image, and filled in on Pinterest when posting",
+      "Scene Maker: 2x plays a scene's video twice when stitched",
+      "More agent (MCP) tools: pick the Pinterest board per pin, find shop products, and prepare Batch Stitch voiceovers and captions ahead of time",
+    ],
+  },
+  {
     version: "6.0.6",
     date: "Oct 29, 2026",
-    latest: true,
     notes: [
       "TikTok scheduling works with TikTok's new date and time pickers as well as the old ones, and checks the schedule before posting so a post never goes out at the wrong time",
       "Gemini: pick Auto, Pro or Argon and a Thinking level (Low, Medium, High) in Product Import → Configuration",
