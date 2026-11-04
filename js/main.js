@@ -8,14 +8,24 @@ const RELEASE_REPO = "https://github.com/SuertoMark24/stitchify-site";
 const CONTACT_EMAIL = "suertomarkanthony@gmail.com";
 
 const LATEST = {
-  version: "6.0.7",
+  version: "6.0.8",
 };
 
 const RELEASES = [
   {
+    version: "6.0.8",
+    date: "Nov 4, 2026",
+    latest: true,
+    notes: [
+      "Update from Settings: drag in the update zip you received and Stitchify installs it and restarts. Your licence, keys and accounts are kept",
+      "Stitcher keeps your clips' own sound when you don't add an audio file",
+      "Stitcher watermark: choose its position and size, saved so you only type it once",
+      "Scene Maker shows each scene's file number, so you can find it in the folder",
+    ],
+  },
+  {
     version: "6.0.7",
     date: "Nov 3, 2026",
-    latest: true,
     notes: [
       "Product Import: Find products. Paste a TikTok Shop category link, set a minimum rating, and pick the products to import",
       "Found products remind you on Discord, in each account's own channel, to add them to your Showcase after import",
